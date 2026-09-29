@@ -1,0 +1,378 @@
+import React, { useState, useEffect } from "react";
+import {
+  ShoppingCartIcon,
+  ShoppingBagIcon,
+  MenuIcon,
+  XIcon,
+  UserIcon,
+  SearchIcon,
+  HeartIcon,
+  HomeIcon,
+  PillIcon,
+  ChevronRightIcon,
+} from "lucide-react";
+import { Link, useResolvedPath, useNavigate } from "react-router-dom";
+import useCart from "./hooks/useCart";
+
+const Navbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const { cartItems } = useCart();
+
+  const navigate = useNavigate();
+  const { pathname } = useResolvedPath("/");
+
+  const isHomePage = pathname === "/";
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 12);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery("");
+      setIsMenuOpen(false);
+    }
+  };
+
+  const navLinks = [
+    {
+      path: "/",
+      label: "Home",
+      icon: HomeIcon,
+    },
+    {
+      path: "/about",
+      label: "About Us",
+      icon: ShoppingBagIcon,
+    },
+    {
+      path: "/services",
+      label: "Services",
+      icon: PillIcon,
+    },
+  ];
+
+  return (
+    <header
+      className={`
+        fixed top-0 left-0 w-full z-50
+        transition-all duration-300
+        ${
+          isScrolled
+            ? "bg-[#071a2d]/95 backdrop-blur-xl border-b border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.18)]"
+            : "bg-[#071a2d]/90 backdrop-blur-md border-b border-white/[0.06]"
+        }
+      `}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="h-[72px] flex items-center justify-between gap-5">
+          {/* ================= LOGO ================= */}
+          <Link to="/" className="flex items-center gap-3 shrink-0 group">
+            <div className="leading-none">
+              <div className="text-white font-semibold tracking-[0.12em] text-[15px] sm:text-[17px]">
+                MEDICAL
+                <span className="text-blue-400">-STORE</span>
+              </div>
+
+              <div className="hidden sm:block text-[9px] text-slate-500 tracking-[0.25em] mt-1.5 uppercase">
+                Healthcare • Pharmacy
+              </div>
+            </div>
+          </Link>
+
+          {/* ================= DESKTOP NAV ================= */}
+          <nav className="hidden lg:flex items-center h-full">
+            <div className="flex items-center gap-1">
+              {navLinks.map((link) => {
+                const Icon = link.icon;
+                const isActive = pathname === link.path;
+
+                return (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    className={`
+                      relative px-4 py-2.5
+                      flex items-center gap-2
+                      text-sm
+                      transition-all duration-200
+                      ${
+                        isActive
+                          ? "text-blue-400"
+                          : "text-slate-400 hover:text-white"
+                      }
+                    `}
+                  >
+                    <Icon
+                      className={`w-[17px] h-[17px] ${
+                        isActive ? "text-blue-400" : "text-slate-500"
+                      }`}
+                      strokeWidth={1.8}
+                    />
+
+                    <span>{link.label}</span>
+
+                    {isActive && (
+                      <span className="absolute bottom-[-1px] left-4 right-4 h-[2px] bg-blue-500" />
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+          </nav>
+
+          {/* ================= SEARCH ================= */}
+          <div className="hidden md:flex flex-1 max-w-[360px] lg:max-w-[420px]">
+            <form onSubmit={handleSearch} className="w-full">
+              <div className="relative group">
+                <SearchIcon
+                  className="
+                    absolute left-3.5 top-1/2
+                    -translate-y-1/2
+                    w-[17px] h-[17px]
+                    text-slate-500
+                    group-focus-within:text-blue-400
+                    transition-colors
+                  "
+                  strokeWidth={1.8}
+                />
+
+                <input
+                  type="text"
+                  placeholder="Search medicines, products..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="
+                    w-full
+                    h-10
+                    pl-10 pr-4
+                    bg-[#0b2035]
+                    border border-white/[0.08]
+                    text-sm text-white
+                    placeholder:text-slate-600
+                    outline-none
+                    transition-all duration-200
+                    focus:border-blue-500/60
+                    focus:bg-[#0d253d]
+                  "
+                />
+              </div>
+            </form>
+          </div>
+
+          {/* ================= ACTIONS ================= */}
+          <div className="flex items-center gap-1 shrink-0">
+            {/* Wishlist */}
+            {isHomePage && (
+              <button
+                onClick={() => navigate("/wishlist")}
+                className="
+                  relative
+                  w-10 h-10
+                  flex items-center justify-center
+                  text-slate-400
+                  hover:text-white
+                  hover:bg-white/[0.05]
+                  transition-all duration-200
+                "
+                aria-label="Wishlist"
+              >
+                <HeartIcon className="w-[19px] h-[19px]" strokeWidth={1.8} />
+              </button>
+            )}
+
+            {/* Cart */}
+            {isHomePage && (
+              <Link to={"/cart"}
+                className="
+    relative
+    w-10 h-10
+    flex items-center justify-center
+    border border-blue-500/30
+    bg-blue-500/10
+    group-hover:bg-blue-500/15
+    group-hover:border-blue-400/50
+    transition-all duration-300
+  "
+              >
+                <ShoppingCartIcon
+                  className="w-[21px] h-[21px] text-blue-400"
+                  strokeWidth={1.8}
+                />
+
+                {cartItems?.length > 0 && (
+                  <span
+                    className="
+        absolute
+        -top-1.5
+        -right-1.5
+        min-w-[18px]
+        h-[18px]
+        px-1
+        flex items-center justify-center
+        bg-blue-600
+        text-white
+        text-[10px]
+        font-bold
+        leading-none
+        rounded-full
+        border-2
+        border-[#071a2d]
+      "
+                  >
+                    {cartItems.length}
+                  </span>
+                )}
+              </Link>
+            )}
+
+            {/* Divider */}
+            <div className="hidden md:block w-px h-7 bg-white/10 mx-2" />
+
+            {/* Account */}
+            <button
+              onClick={() => navigate("/account")}
+              className="
+                w-10 h-10
+                flex items-center justify-center
+                text-slate-400
+                hover:text-white
+                hover:bg-white/[0.05]
+                transition-all duration-200
+              "
+              aria-label="Account"
+            >
+              <UserIcon className="w-[19px] h-[19px]" strokeWidth={1.8} />
+            </button>
+
+            {/* Mobile Menu */}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="
+                md:hidden
+                w-10 h-10
+                flex items-center justify-center
+                text-slate-400
+                hover:text-white
+                hover:bg-white/[0.05]
+                transition-all duration-200
+              "
+              aria-label="Toggle menu"
+              aria-expanded={isMenuOpen}
+            >
+              {isMenuOpen ? (
+                <XIcon className="w-5 h-5" strokeWidth={1.8} />
+              ) : (
+                <MenuIcon className="w-5 h-5" strokeWidth={1.8} />
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* ================= MOBILE MENU ================= */}
+        {isMenuOpen && (
+          <div
+            className="
+              md:hidden
+              border-t border-white/[0.08]
+              py-5
+              bg-[#071a2d]
+            "
+          >
+            {/* Mobile Search */}
+            <form onSubmit={handleSearch} className="mb-5">
+              <div className="relative">
+                <SearchIcon
+                  className="
+                    absolute left-3.5 top-1/2
+                    -translate-y-1/2
+                    w-[17px] h-[17px]
+                    text-slate-500
+                  "
+                  strokeWidth={1.8}
+                />
+
+                <input
+                  type="text"
+                  placeholder="Search medicines, products..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="
+                    w-full
+                    h-11
+                    pl-10 pr-4
+                    bg-[#0b2035]
+                    border border-white/[0.08]
+                    text-sm text-white
+                    placeholder:text-slate-600
+                    outline-none
+                    focus:border-blue-500/60
+                    transition-all
+                  "
+                />
+              </div>
+            </form>
+
+            {/* Mobile Navigation */}
+            <div className="border-t border-white/[0.06]">
+              {navLinks.map((link) => {
+                const Icon = link.icon;
+                const isActive = pathname === link.path;
+
+                return (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    onClick={() => setIsMenuOpen(false)}
+                    className={`
+                      flex items-center justify-between
+                      py-3.5
+                      border-b border-white/[0.05]
+                      transition-colors
+                      ${
+                        isActive
+                          ? "text-blue-400"
+                          : "text-slate-400 hover:text-white"
+                      }
+                    `}
+                  >
+                    <div className="flex items-center gap-3">
+                      <Icon
+                        className={`w-[18px] h-[18px] ${
+                          isActive ? "text-blue-400" : "text-slate-500"
+                        }`}
+                        strokeWidth={1.8}
+                      />
+
+                      <span className="text-sm">{link.label}</span>
+                    </div>
+
+                    <ChevronRightIcon
+                      className="w-4 h-4 text-slate-600"
+                      strokeWidth={1.7}
+                    />
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
+    </header>
+  );
+};
+
+export default Navbar;

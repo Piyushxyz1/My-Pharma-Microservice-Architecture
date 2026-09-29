@@ -1,0 +1,103 @@
+warehouse-system/
+│
+├── backend/
+│   │
+│   ├── auth-service/
+│   │   ├── controllers/
+│   │   │   └── authController.js
+│   │   │
+│   │   ├── models/
+│   │   │   └── User.js
+│   │   │
+│   │   ├── routes/
+│   │   │   └── authRoutes.js
+│   │   │
+│   │   ├── middleware/
+│   │   │   └── authMiddleware.js
+│   │   │
+│   │   ├── config/
+│   │   │   └── db.js
+│   │   │
+│   │   ├── server.js
+│   │   └── package.json
+│   │
+│   ├── product-service/
+│   │   ├── controllers/
+│   │   │   └── productController.js
+│   │   │
+│   │   ├── models/
+│   │   │   └── Product.js
+│   │   │
+│   │   ├── routes/
+│   │   │   └── productRoutes.js
+│   │   │
+│   │   ├── middleware/
+│   │   │   └── authMiddleware.js
+│   │   │
+│   │   ├── config/
+│   │   │   └── db.js
+│   │   │
+│   │   ├── server.js
+│   │   └── package.json
+│   │
+│   ├── inventory-service/
+│   │   ├── controllers/
+│   │   │   └── inventoryController.js
+│   │   │
+│   │   ├── models/
+│   │   │   └── InventoryMovement.js
+│   │   │
+│   │   ├── routes/
+│   │   │   └── inventoryRoutes.js
+│   │   │
+│   │   ├── middleware/
+│   │   │   └── authMiddleware.js
+│   │   │
+│   │   ├── config/
+│   │   │   └── db.js
+│   │   │
+│   │   ├── server.js
+│   │   └── package.json
+│   │
+│   ├── supplier-service/
+│   │   ├── controllers/
+│   │   │   └── supplierController.js
+│   │   │
+│   │   ├── models/
+│   │   │   └── Supplier.js
+│   │   │
+│   │   ├── routes/
+│   │   │   └── supplierRoutes.js
+│   │   │
+│   │   ├── middleware/
+│   │   │   └── authMiddleware.js
+│   │   │
+│   │   ├── config/
+│   │   │   └── db.js
+│   │   │
+│   │   ├── server.js
+│   │   └── package.json
+│   │
+│   └── order-service/
+│       ├── controllers/
+│       │   └── orderController.js
+│       │
+│       ├── models/
+│       │   └── Order.js
+│       │
+│       ├── routes/
+│       │   └── orderRoutes.js
+│       │
+│       ├── middleware/
+│       │   └── authMiddleware.js
+│       │
+│       ├── config/
+│       │   └── db.js
+│       │
+│       ├── server.js
+│       └── package.json
+│
+├── frontend/
+│   └── ...
+│
+└── package.json
