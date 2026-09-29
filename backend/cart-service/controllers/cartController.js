@@ -233,3 +233,39 @@ export const removeFromCart = async (req, res) => {
     });
   }
 };
+
+
+ // clear cart from database
+
+export const clearCart = async (req, res) => {
+  try {
+    const userId = req.userId;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+      });
+    }
+
+    const cart = await Cart.findOneAndUpdate(
+      { userId },
+      { $set: { items: [] } },
+      { new: true }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Cart cleared successfully",
+      cart,
+    });
+
+  } catch (error) {
+    console.error("Clear cart error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to clear cart",
+    });
+  }
+};

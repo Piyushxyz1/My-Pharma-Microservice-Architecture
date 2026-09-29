@@ -285,6 +285,45 @@ const useCart = () => {
     fetchCart();
   }, [fetchCart]);
 
+const clearCartFromDatabase = async () => {
+  try {
+    if (!token) {
+      dispatch(clearCart());
+      return;
+    }
+
+    const response = await fetch(
+      `${API_URL}/api/cart/clear`,
+      {
+        method: "DELETE",
+        headers: {
+          token: token,
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      toast.error(
+        data.message || "Unable to clear cart"
+      );
+      return;
+    }
+
+    dispatch(clearCart());
+
+  } catch (error) {
+    console.error(
+      "Clear cart error:",
+      error
+    );
+
+    toast.error(
+      "Unable to clear cart"
+    );
+  }
+};
 
   return {
     cartItems,
@@ -292,6 +331,7 @@ const useCart = () => {
     updateQuantity,
     removeFromCart,
     fetchCart,
+    clearCartFromDatabase
   };
 };
 

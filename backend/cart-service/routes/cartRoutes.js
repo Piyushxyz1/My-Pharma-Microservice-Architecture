@@ -5,6 +5,7 @@ import {
   getCart,
   removeFromCart,
   updateCartQuantity,
+  clearCart
 } from "../controllers/cartController.js";
 
 import authMiddleware from "../middleware/authMiddleware.js";
@@ -43,5 +44,11 @@ router.delete(
   removeFromCart
 );
 
+
+router.delete(
+  "/clear",
+  authMiddleware,
+  clearCart
+);
 
 export default router;

@@ -12,6 +12,10 @@ import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/SignUp";
 import CartPage from "./pages/CartPage";
 import ProductDetails from "./pages/ProductDetails";
+import CheckoutPage from "./pages/CheckoutPage";
+import OrderSuccess from "./pages/OrderSuccess";
+import Orders from "./pages/Orders";
+import ScrollToTop from "./components/ScrollToTop";
 function App() {
   return (
     <div className="min-h-screen bg-base-200 transition-colors duration-300">
@@ -61,7 +65,11 @@ function App() {
             path="/products/:id"
             element={<ProductDetails />}
           />
+          
+          <Route path="/checkout" element={<CheckoutPage />} />
 
+            <Route path="/order-success" element={<OrderSuccess />} />
+            <Route path="/orders" element={<Orders/>} />
       </Routes>
 
       <Footer />
@@ -70,6 +78,7 @@ function App() {
         position="top-center"
         autoClose={2000}
       />
+      <ScrollToTop/>
 
     </div>
   );
