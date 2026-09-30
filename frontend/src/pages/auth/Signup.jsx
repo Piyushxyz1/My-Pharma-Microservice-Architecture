@@ -12,8 +12,11 @@ import {
   ShieldCheckIcon,
 } from "lucide-react";
 import { toast } from "react-toastify";
+import AUTH_API from "../../config/api"
 
 const Signup = () => {
+const AUTH_API_URL = AUTH_API.AUTH
+
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -46,7 +49,7 @@ const Signup = () => {
       setLoading(true);
 
       const response = await fetch(
-        "http://localhost:5001/api/auth/signup",
+        `${AUTH_API_URL}/api/auth/signup`,
         {
           method: "POST",
           headers: {

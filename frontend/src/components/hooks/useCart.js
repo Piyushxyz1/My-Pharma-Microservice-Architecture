@@ -2,7 +2,7 @@ import {
   useCallback,
   useEffect,
 } from "react";
-
+import CART_API from "../../config/api"
 import { toast } from "react-toastify";
 
 import {
@@ -16,7 +16,7 @@ import {
 } from "../../store/cartSlice";
 
 
-const API_URL = "http://localhost:5003";
+const CART_API_URL = CART_API.CART;
 
 
 const useCart = () => {
@@ -45,7 +45,7 @@ const useCart = () => {
       }
 
       const response = await fetch(
-        `${API_URL}/api/cart`,
+        `${CART_API_URL}/api/cart`,
         {
           method: "GET",
           headers: {
@@ -98,7 +98,7 @@ const useCart = () => {
       }
 
       const response = await fetch(
-        `${API_URL}/api/cart/add`,
+        `${CART_API_URL}/api/cart/add`,
         {
           method: "POST",
 
@@ -170,7 +170,7 @@ const useCart = () => {
       }
 
       const response = await fetch(
-        `${API_URL}/api/cart/update/${productId}`,
+        `${CART_API_URL}/api/cart/update/${productId}`,
         {
           method: "PATCH",
 
@@ -233,7 +233,7 @@ const useCart = () => {
       }
 
       const response = await fetch(
-        `${API_URL}/api/cart/remove/${productId}`,
+        `${CART_API_URL}/api/cart/remove/${productId}`,
         {
           method: "DELETE",
 
@@ -293,7 +293,7 @@ const clearCartFromDatabase = async () => {
     }
 
     const response = await fetch(
-      `${API_URL}/api/cart/clear`,
+      `${CART_API_URL}/api/cart/clear`,
       {
         method: "DELETE",
         headers: {

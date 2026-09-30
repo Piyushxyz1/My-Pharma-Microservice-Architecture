@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { toast } from "react-toastify";
 import { medicalProducts } from "../assets/products";
+import useCart from "../components/hooks/useCart";
 
 
 
@@ -26,6 +27,7 @@ const ProductPage = () => {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [wishlist, setWishlist] = useState([]);
+  const {addToCart} = useCart()
 
   const filteredProducts = useMemo(() => {
     return medicalProducts.filter((product) => {
@@ -51,49 +53,7 @@ const ProductPage = () => {
     );
   };
 
-  const handleAddToCart = async (product) => {
-    try {
-      const token = localStorage.getItem("token");
 
-      if (!token) {
-        toast.error("You must be logged in to continue");
-        return;
-      }
-
-      const response = await fetch(
-        "http://localhost:5003/api/cart/add",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            token,
-          },
-          body: JSON.stringify({
-            productId: product.id,
-            name: product.name,
-            category: product.category,
-            price: product.price,
-            image: product.image || "",
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        toast.error(
-          data.message || "Unable to add product to cart"
-        );
-        return;
-      }
-
-      toast.success("Added to cart");
-      window.dispatchEvent(new Event("cartUpdated"));
-    } catch (error) {
-      console.error("Add to cart error:", error);
-      toast.error("Unable to add product to cart");
-    }
-  };
 
   return (
     <div className="min-h-screen bg-[#f7f9fc] text-[#0a1929]">
@@ -427,7 +387,7 @@ const ProductPage = () => {
 
                     <button
                       onClick={() =>
-                        handleAddToCart(product)
+                        addToCart(product)
                       }
                       disabled={product.stock <= 0}
                       className="mt-5 flex h-11 w-full items-center justify-center gap-2 bg-[#0b2035] text-sm font-bold text-white transition hover:bg-[#2563eb] disabled:cursor-not-allowed disabled:bg-slate-300"

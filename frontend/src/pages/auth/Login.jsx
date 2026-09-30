@@ -12,8 +12,10 @@ import {
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/authSlice";
+import AUTH_API from "../../config/api"
 
 const Login = () => {
+  const AUTH_API_URL = AUTH_API.AUTH
   const navigate = useNavigate();
   const dispatch = useDispatch()
 
@@ -38,7 +40,7 @@ const Login = () => {
     try {
       setLoading(true);
 
-      const response = await fetch("http://localhost:5001/api/auth/login", {
+      const response = await fetch(`${AUTH_API_URL}/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

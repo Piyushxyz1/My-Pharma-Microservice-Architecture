@@ -10,8 +10,10 @@ import {
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import ORDERS_API from "../config/api"
 
 const Orders = () => {
+  const ORDERS_API_URL = ORDERS_API.ORDER
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -27,7 +29,7 @@ const Orders = () => {
         }
 
         const response = await axios.get(
-          "http://localhost:5005/api/orders",
+          `${ORDERS_API_URL}/api/orders`,
           {
             headers: {
               token: token,

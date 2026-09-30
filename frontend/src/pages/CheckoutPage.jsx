@@ -14,11 +14,12 @@ import {
 import { toast } from "react-toastify";
 import axios from "axios";
 import useCart from "../components/hooks/useCart";
+import PAYMENT_API from "../config/api"
 
 const CheckoutPage = () => {
+  const PAYMENT_API_URL = PAYMENT_API.PAYMENT
   const navigate = useNavigate();
   const {clearCartFromDatabase} = useCart()
-
   const cartItems = useSelector(
     (state) => state.cart.items
   );
@@ -168,7 +169,7 @@ const CheckoutPage = () => {
       // =========================
 
       const { data } = await axios.post(
-        `http://localhost:5004/api/payment/create-order`,
+        `${PAYMENT_API_URL}/api/payment/create-order`,
         {
           amount: total,
         },
@@ -206,7 +207,7 @@ const CheckoutPage = () => {
             // =========================
 
             await axios.post(
-              `http://localhost:5004/api/payment/verify`,
+              `${PAYMENT_API_URL}/api/payment/verify`,
               {
                 razorpay_order_id:
                   response.razorpay_order_id,
