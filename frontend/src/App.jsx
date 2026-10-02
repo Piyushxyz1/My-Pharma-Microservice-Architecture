@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route ,Navigate} from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 import Navbar from "./components/Navbar";
@@ -16,8 +16,11 @@ import CheckoutPage from "./pages/CheckoutPage";
 import OrderSuccess from "./pages/OrderSuccess";
 import Orders from "./pages/Orders";
 import ScrollToTop from "./components/ScrollToTop";
+import { useSelector } from "react-redux";
 
 function App() {
+
+  const token = useSelector((state)=>state.auth.token)
   return (
     <div className="min-h-screen bg-base-200 transition-colors duration-300">
 
@@ -27,7 +30,17 @@ function App() {
 
         {/* ================= PUBLIC ROUTES ================= */}
 
-        <Route path="/" element={<HomePage />} />
+       <Route
+          path="/"
+          element={
+            token ? <Navigate to="/home" replace /> : <Login />
+          }
+        />
+
+         <Route
+          path="/home"
+          element={<HomePage/>}
+        />
 
         <Route
           path="/about"
@@ -49,19 +62,12 @@ function App() {
           element={<Signup />}
         />
 
-       <Route path="/cart" element={<CartPage />} />
-        {/* ================= PROTECTED ROUTES ================= */}
-
-        <Route element={<ProtectedRoute />}>
+       <Route path="/cart" element={<CartPage />} /> 
 
           <Route
             path="/products"
             element={<ProductPage />}
           />
-
-         
-
-        </Route>
           <Route
             path="/products/:id"
             element={<ProductDetails />}

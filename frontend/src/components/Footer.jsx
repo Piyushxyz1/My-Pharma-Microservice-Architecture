@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  BoxesIcon,
+  HeartPulseIcon,
   FacebookIcon,
   TwitterIcon,
   InstagramIcon,
@@ -12,40 +12,70 @@ import {
   ClockIcon,
   ShieldCheckIcon,
   TruckIcon,
-  ClipboardListIcon,
-  PackageCheckIcon,
-  RefreshCwIcon,
+  PillIcon,
+  ShoppingBagIcon,
+  HeartIcon,
+  UserCircleIcon,
   ChevronRightIcon,
   AwardIcon,
-  BarChart3Icon,
-  WarehouseIcon,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
-  // Quick Links
+  // ================================
+  // QUICK LINKS
+  // ================================
   const quickLinks = [
-    { name: "Dashboard", path: "/" },
-    { name: "Inventory", path: "/products" },
-    { name: "Categories", path: "/categories" },
-    { name: "Suppliers", path: "/suppliers" },
-    { name: "Orders", path: "/orders" },
-    { name: "Contact", path: "/contact" },
+    { name: "Home", path: "/" },
+    { name: "About Us", path: "/about" },
+    { name: "Services", path: "/services" },
+    { name: "Products", path: "/product-list" },
+    { name: "Wishlist", path: "/wishlist" },
+    { name: "My Account", path: "/account" },
+    { name: "My Orders", path: "/orders" },
   ];
 
-  // Warehouse Services
+  // ================================
+  // HEALTHCARE SERVICES
+  // ================================
   const services = [
-    { name: "Inventory Management", icon: BoxesIcon },
-    { name: "Stock Monitoring", icon: BarChart3Icon },
-    { name: "Purchase Orders", icon: ClipboardListIcon },
-    { name: "Stock Receiving", icon: PackageCheckIcon },
-    { name: "Stock Transfers", icon: RefreshCwIcon },
-    { name: "Warehouse Operations", icon: WarehouseIcon },
+    {
+      name: "Medicines & Healthcare",
+      icon: PillIcon,
+      path: "/product-list",
+    },
+    {
+      name: "Wellness Products",
+      icon: HeartPulseIcon,
+      path: "/product-list",
+    },
+    {
+      name: "First Aid Essentials",
+      icon: ShieldCheckIcon,
+      path: "/product-list",
+    },
+    {
+      name: "Fitness Nutrition",
+      icon: ShoppingBagIcon,
+      path: "/product-list",
+    },
+    {
+      name: "Health Devices",
+      icon: HeartPulseIcon,
+      path: "/product-list",
+    },
+    {
+      name: "Personal Care",
+      icon: HeartIcon,
+      path: "/product-list",
+    },
   ];
 
-  // Contact Information
+  // ================================
+  // CONTACT INFORMATION
+  // ================================
   const contactInfo = [
     {
       icon: PhoneIcon,
@@ -54,12 +84,12 @@ const Footer = () => {
     },
     {
       icon: MailIcon,
-      text: "operations@warehouse.com",
-      href: "mailto:operations@warehouse.com",
+      text: "care@medicalstore.com",
+      href: "mailto:care@medicalstore.com",
     },
     {
       icon: MapPinIcon,
-      text: "Industrial Area, New Delhi, India",
+      text: "New Delhi, India",
       href: "#",
     },
     {
@@ -69,7 +99,9 @@ const Footer = () => {
     },
   ];
 
-  // Social Links
+  // ================================
+  // SOCIAL LINKS
+  // ================================
   const socialLinks = [
     {
       icon: FacebookIcon,
@@ -104,14 +136,17 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="relative bg-[#061522] text-white border-t border-[#18334a] overflow-hidden">
+    <footer className="relative overflow-hidden border-t border-[#18334a] bg-[#061522] text-white">
 
-      {/* Background Effects */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute -top-32 -right-32 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-600/5 rounded-full blur-3xl" />
+      {/* =====================================================
+          BACKGROUND EFFECTS
+      ===================================================== */}
+      <div className="pointer-events-none absolute inset-0">
 
-        {/* Subtle Grid */}
+        <div className="absolute -right-32 -top-32 h-80 w-80 rounded-full bg-blue-500/5 blur-3xl" />
+
+        <div className="absolute -bottom-40 -left-40 h-96 w-96 rounded-full bg-blue-600/5 blur-3xl" />
+
         <div
           className="absolute inset-0 opacity-[0.025]"
           style={{
@@ -122,128 +157,131 @@ const Footer = () => {
         />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-8">
+      <div className="relative mx-auto max-w-7xl px-4 pb-8 pt-14 sm:px-6 lg:px-8">
 
-        {/* Operations Banner */}
-        <div className="mb-12 pb-10 border-b border-[#18334a]">
-          <div className="relative bg-[#0a1f32] border border-[#1b3b55] p-7 sm:p-8">
+        {/* =====================================================
+            HEALTHCARE NEWSLETTER BANNER
+        ===================================================== */}
+        <div className="mb-12 border-b border-[#18334a] pb-10">
 
-            <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500" />
+          <div className="relative overflow-hidden border border-[#1b3b55] bg-[#0a1f32] p-7 sm:p-8">
 
-            <div className="grid md:grid-cols-2 gap-8 items-center">
+            {/* Accent */}
+            <div className="absolute bottom-0 left-0 top-0 w-1 bg-blue-500" />
 
+            <div className="grid items-center gap-8 md:grid-cols-2">
+
+              {/* Content */}
               <div>
-                <div className="flex items-center gap-2 mb-3">
-                  <WarehouseIcon className="w-5 h-5 text-blue-400" />
 
-                  <span className="text-xs font-semibold tracking-[0.2em] uppercase text-blue-400">
-                    Warehouse Operations
+                <div className="mb-3 flex items-center gap-2">
+                  <HeartPulseIcon className="h-5 w-5 text-blue-400" />
+
+                  <span className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-400">
+                    Healthcare & Wellness
                   </span>
                 </div>
 
-                <h3 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">
-                  Stay on top of your inventory
+                <h3 className="mb-3 text-2xl font-bold tracking-tight sm:text-3xl">
+                  Stay informed about your health
                 </h3>
 
-                <p className="text-sm text-slate-400 leading-relaxed max-w-xl">
-                  Receive operational updates, stock alerts, inventory
-                  insights, and warehouse management information directly
-                  in your inbox.
+                <p className="max-w-xl text-sm leading-relaxed text-slate-400">
+                  Get useful healthcare updates, wellness tips, product
+                  information and special offers delivered straight to
+                  your inbox.
                 </p>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-3">
-
-                <input
-                  type="email"
-                  placeholder="Enter your email address"
-                  className="flex-1 px-4 py-3 bg-[#071a2d] border border-[#27445d] text-sm text-white placeholder:text-slate-500 outline-none focus:border-blue-500 transition-colors"
-                />
-
-                <button className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold flex items-center justify-center gap-2 transition-colors group">
-                  Subscribe
-
-                  <ChevronRightIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </button>
 
               </div>
+
+            
 
             </div>
           </div>
         </div>
 
-        {/* Main Footer Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-10">
+        {/* =====================================================
+            MAIN FOOTER
+        ===================================================== */}
+        <div className="mb-10 grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
 
-          {/* Brand */}
+          {/* =================================================
+              BRAND
+          ================================================= */}
           <div className="space-y-5">
 
             <Link
               to="/"
-              className="inline-flex items-center gap-3 group"
+              className="group inline-flex items-center gap-3"
             >
               <div className="relative">
 
-                <BoxesIcon className="w-7 h-7 text-blue-400" />
+                <HeartPulseIcon className="h-7 w-7 text-blue-400" />
 
-                <span className="absolute -top-1 -right-1 w-2 h-2 bg-blue-400 animate-pulse" />
+                <span className="absolute -right-1 -top-1 h-2 w-2 animate-pulse bg-blue-400" />
 
               </div>
 
-              <span className="font-bold font-mono text-xl tracking-tight text-white">
-                WAREHOUSE
-              </span>
+              <div>
+                <span className="block font-mono text-xl font-bold tracking-tight text-white">
+                  MEDICAL-STORE
+                </span>
+
+                <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-blue-400">
+                  Healthcare • Pharmacy
+                </span>
+              </div>
             </Link>
 
-            <p className="text-sm text-slate-400 leading-relaxed">
-              A centralized inventory management platform designed to
-              help businesses track products, monitor stock levels,
-              manage suppliers, and streamline warehouse operations.
+            <p className="text-sm leading-relaxed text-slate-400">
+              Your trusted destination for medicines, wellness products
+              and everyday healthcare essentials. Simple, reliable and
+              convenient healthcare shopping.
             </p>
 
             {/* Trust Badge */}
-            <div className="flex items-center gap-3 p-4 bg-[#0a1f32] border border-[#1b3b55]">
+            <div className="flex items-center gap-3 border border-[#1b3b55] bg-[#0a1f32] p-4">
 
-              <div className="w-9 h-9 flex items-center justify-center bg-blue-500/10">
-                <ShieldCheckIcon className="w-5 h-5 text-blue-400" />
+              <div className="flex h-9 w-9 items-center justify-center bg-blue-500/10">
+                <ShieldCheckIcon className="h-5 w-5 text-blue-400" />
               </div>
 
               <div>
                 <p className="text-xs font-semibold text-white">
-                  Secure Operations
+                  Trusted Healthcare
                 </p>
 
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Reliable inventory management
+                <p className="mt-0.5 text-xs text-slate-500">
+                  Quality products & secure ordering
                 </p>
               </div>
 
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* =================================================
+              QUICK LINKS
+          ================================================= */}
           <div>
 
-            <h3 className="font-semibold text-base mb-5">
+            <h3 className="mb-5 text-base font-semibold">
               Quick Links
             </h3>
 
-            <div className="w-8 h-0.5 bg-blue-500 mb-5" />
+         
 
             <ul className="space-y-3">
 
-              {quickLinks.map((link, index) => (
-                <li key={index}>
+              {quickLinks.map((link) => (
+                <li key={link.name}>
 
                   <Link
                     to={link.path}
-                    className="text-sm text-slate-400 hover:text-blue-400 transition-colors flex items-center gap-2 group"
+                    className="group flex items-center gap-2 text-sm text-slate-400 transition-colors hover:text-blue-400"
                   >
-
-                    <ChevronRightIcon className="w-3 h-3 text-slate-600 group-hover:text-blue-400 group-hover:translate-x-1 transition-all" />
+                    <ChevronRightIcon className="h-3 w-3 text-slate-600 transition-all group-hover:translate-x-1 group-hover:text-blue-400" />
 
                     {link.name}
-
                   </Link>
 
                 </li>
@@ -252,29 +290,31 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Services */}
+          {/* =================================================
+              HEALTHCARE SERVICES
+          ================================================= */}
           <div>
 
-            <h3 className="font-semibold text-base mb-5">
-              Warehouse Services
+            <h3 className="mb-5 text-base font-semibold">
+              Healthcare Services
             </h3>
 
-            <div className="w-8 h-0.5 bg-blue-500 mb-5" />
+         
 
             <ul className="space-y-3">
 
-              {services.map((service, index) => {
+              {services.map((service) => {
                 const Icon = service.icon;
 
                 return (
-                  <li key={index}>
+                  <li key={service.name}>
 
                     <Link
-                      to="#"
-                      className="text-sm text-slate-400 hover:text-blue-400 transition-colors flex items-center gap-3 group"
+                      to={service.path}
+                      className="group flex items-center gap-3 text-sm text-slate-400 transition-colors hover:text-blue-400"
                     >
 
-                      <Icon className="w-4 h-4 text-slate-500 group-hover:text-blue-400 group-hover:scale-110 transition-all" />
+                      <Icon className="h-4 w-4 text-slate-500 transition-all group-hover:scale-110 group-hover:text-blue-400" />
 
                       {service.name}
 
@@ -287,29 +327,31 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* =================================================
+              CONTACT
+          ================================================= */}
           <div>
 
-            <h3 className="font-semibold text-base mb-5">
-              Operations Contact
+            <h3 className="mb-5 text-base font-semibold">
+              Contact & Support
             </h3>
 
-            <div className="w-8 h-0.5 bg-blue-500 mb-5" />
+         
 
             <ul className="space-y-4">
 
-              {contactInfo.map((info, index) => {
+              {contactInfo.map((info) => {
                 const Icon = info.icon;
 
                 return (
-                  <li key={index}>
+                  <li key={info.text}>
 
                     <a
                       href={info.href}
-                      className="text-sm text-slate-400 hover:text-blue-400 transition-colors flex items-start gap-3 group"
+                      className="group flex items-start gap-3 text-sm text-slate-400 transition-colors hover:text-blue-400"
                     >
 
-                      <Icon className="w-4 h-4 mt-0.5 text-slate-500 group-hover:text-blue-400 flex-shrink-0 transition-colors" />
+                      <Icon className="mt-0.5 h-4 w-4 shrink-0 text-slate-500 transition-colors group-hover:text-blue-400" />
 
                       <span className="leading-relaxed">
                         {info.text}
@@ -325,49 +367,51 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Social + Operations */}
-        <div className="py-7 border-t border-[#18334a]">
+        {/* =====================================================
+            SOCIAL + BENEFITS
+        ===================================================== */}
+        <div className="border-t border-[#18334a] py-7">
 
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
 
             {/* Social */}
             <div className="flex gap-3">
 
-              {socialLinks.map((social, index) => {
+              {socialLinks.map((social) => {
                 const Icon = social.icon;
 
                 return (
                   <a
-                    key={index}
+                    key={social.name}
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`w-9 h-9 border border-[#27445d] bg-[#0a1f32] flex items-center justify-center text-slate-500 ${social.color} hover:border-blue-500 hover:-translate-y-1 transition-all duration-200`}
                     aria-label={social.name}
+                    className={`flex h-9 w-9 items-center justify-center border border-[#27445d] bg-[#0a1f32] text-slate-500 transition-all duration-200 hover:-translate-y-1 hover:border-blue-500 ${social.color}`}
                   >
-                    <Icon className="w-4 h-4" />
+                    <Icon className="h-4 w-4" />
                   </a>
                 );
               })}
 
             </div>
 
-            {/* Operational Features */}
+            {/* Healthcare Features */}
             <div className="flex flex-wrap justify-center gap-5">
 
               <div className="flex items-center gap-2 text-xs text-slate-500">
-                <TruckIcon className="w-4 h-4 text-blue-400" />
-                <span>Stock Dispatch</span>
+                <TruckIcon className="h-4 w-4 text-blue-400" />
+                <span>Fast Delivery</span>
               </div>
 
               <div className="flex items-center gap-2 text-xs text-slate-500">
-                <PackageCheckIcon className="w-4 h-4 text-blue-400" />
-                <span>Verified Inventory</span>
+                <ShieldCheckIcon className="h-4 w-4 text-blue-400" />
+                <span>Trusted Products</span>
               </div>
 
               <div className="flex items-center gap-2 text-xs text-slate-500">
-                <ShieldCheckIcon className="w-4 h-4 text-blue-400" />
-                <span>Secure System</span>
+                <HeartPulseIcon className="h-4 w-4 text-blue-400" />
+                <span>Health First</span>
               </div>
 
             </div>
@@ -375,21 +419,22 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-6 border-t border-[#18334a]">
+        {/* =====================================================
+            BOTTOM BAR
+        ===================================================== */}
+        <div className="border-t border-[#18334a] pt-6">
 
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+          <div className="flex flex-col items-center justify-between gap-4 text-center md:flex-row md:text-left">
 
             <p className="text-xs text-slate-600">
 
-              © {currentYear} WAREHOUSE INVENTORY MANAGEMENT.
-              All rights reserved.
+              © {currentYear} MEDICAL-STORE. All rights reserved.
 
               <span className="mx-2 text-slate-700">|</span>
 
               <Link
                 to="/privacy"
-                className="hover:text-blue-400 transition-colors"
+                className="transition-colors hover:text-blue-400"
               >
                 Privacy Policy
               </Link>
@@ -398,7 +443,7 @@ const Footer = () => {
 
               <Link
                 to="/terms"
-                className="hover:text-blue-400 transition-colors"
+                className="transition-colors hover:text-blue-400"
               >
                 Terms of Service
               </Link>
@@ -408,23 +453,24 @@ const Footer = () => {
             <div className="flex items-center gap-5">
 
               <div className="flex items-center gap-2 text-xs text-slate-600">
-                <ShieldCheckIcon className="w-3.5 h-3.5 text-blue-400" />
-                <span>Secure Platform</span>
+                <ShieldCheckIcon className="h-3.5 w-3.5 text-blue-400" />
+                <span>Secure Shopping</span>
               </div>
 
               <div className="flex items-center gap-2 text-xs text-slate-600">
-                <AwardIcon className="w-3.5 h-3.5 text-blue-400" />
-                <span>Built for Operations</span>
+                <AwardIcon className="h-3.5 w-3.5 text-blue-400" />
+                <span>Quality Healthcare</span>
               </div>
 
             </div>
 
           </div>
         </div>
-
       </div>
 
-      {/* Back To Top */}
+      {/* =====================================================
+          BACK TO TOP
+      ===================================================== */}
       <button
         onClick={() =>
           window.scrollTo({
@@ -432,12 +478,11 @@ const Footer = () => {
             behavior: "smooth",
           })
         }
-        className="fixed bottom-8 right-8 w-11 h-11 bg-blue-600 hover:bg-blue-500 text-white flex items-center justify-center shadow-lg hover:-translate-y-1 transition-all duration-200 z-50"
+        className="fixed bottom-8 right-8 z-50 flex h-11 w-11 items-center justify-center bg-blue-600 text-white shadow-lg transition-all duration-200 hover:-translate-y-1 hover:bg-blue-500"
         aria-label="Back to top"
       >
-        <ChevronRightIcon className="w-5 h-5 rotate-[-90deg]" />
+        <ChevronRightIcon className="h-5 w-5 rotate-[-90deg]" />
       </button>
-
     </footer>
   );
 };

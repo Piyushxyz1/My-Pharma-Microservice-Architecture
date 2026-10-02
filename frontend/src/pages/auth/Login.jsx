@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -7,17 +8,17 @@ import {
   EyeOffIcon,
   ArrowRightIcon,
   ShieldCheckIcon,
-  WarehouseIcon,
+  HeartPulseIcon,
 } from "lucide-react";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/authSlice";
-import AUTH_API from "../../config/api"
+import AUTH_API from "../../config/api";
 
 const Login = () => {
-  const AUTH_API_URL = AUTH_API.AUTH
+  const AUTH_API_URL = AUTH_API.AUTH;
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -69,9 +70,11 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#061522] text-white flex">
+    <div className="min-h-screen bg-[#061522] text-white flex mt-10">
+
       {/* ================= LEFT PANEL ================= */}
       <div className="hidden lg:flex lg:w-[52%] relative overflow-hidden border-r border-white/[0.06]">
+
         {/* Subtle grid */}
         <div
           className="absolute inset-0 opacity-[0.08]"
@@ -85,10 +88,11 @@ const Login = () => {
         />
 
         <div className="relative z-10 flex flex-col justify-between w-full p-12 xl:p-16">
+
           {/* Brand */}
           <Link to="/" className="flex items-center gap-3 w-fit">
             <div className="w-10 h-10 flex items-center justify-center bg-blue-500/10 border border-blue-500/30">
-              <WarehouseIcon
+              <HeartPulseIcon
                 className="w-5 h-5 text-blue-400"
                 strokeWidth={1.8}
               />
@@ -96,38 +100,35 @@ const Login = () => {
 
             <div>
               <div className="font-semibold tracking-[0.12em] text-lg">
-                WAREHOUSE<span className="text-blue-400">-OS</span>
-              </div>
-
-              <div className="text-[9px] text-slate-500 tracking-[0.25em] uppercase mt-1">
-                Inventory Management System
+                Health • Wellness • Care
               </div>
             </div>
           </Link>
 
           {/* Main Content */}
           <div className="max-w-xl">
+
             <div className="flex items-center gap-2 mb-6">
-              <span className="w-8 h-px bg-blue-500" />
 
               <span className="text-blue-400 text-xs tracking-[0.2em] font-medium">
-                WAREHOUSE OPERATIONS
+                HEALTHCARE & PHARMACY
               </span>
             </div>
 
             <h1 className="text-4xl xl:text-5xl font-semibold leading-[1.1] tracking-tight">
-              Inventory,
+              Your health,
               <br />
-              <span className="text-blue-400">under control.</span>
+              <span className="text-blue-400">our priority.</span>
             </h1>
 
             <p className="mt-6 text-slate-400 leading-7 max-w-lg">
-              Manage warehouse inventory, track stock movement, monitor products
-              and keep your operations organized from one secure platform.
+              Discover trusted healthcare products, manage your medicines
+              and take care of your everyday wellness from one secure place.
             </p>
 
             {/* Features */}
             <div className="mt-10 space-y-5">
+
               {/* Feature 1 */}
               <div className="flex items-start gap-4">
                 <div className="w-9 h-9 shrink-0 flex items-center justify-center bg-blue-500/10 border border-blue-500/20">
@@ -139,11 +140,11 @@ const Login = () => {
 
                 <div>
                   <h3 className="text-sm font-medium text-white">
-                    Secure Access
+                    Secure & Trusted
                   </h3>
 
                   <p className="text-xs text-slate-500 mt-1">
-                    Protected access to your warehouse operations.
+                    Secure access to your healthcare account and information.
                   </p>
                 </div>
               </div>
@@ -151,7 +152,7 @@ const Login = () => {
               {/* Feature 2 */}
               <div className="flex items-start gap-4">
                 <div className="w-9 h-9 shrink-0 flex items-center justify-center bg-blue-500/10 border border-blue-500/20">
-                  <WarehouseIcon
+                  <HeartPulseIcon
                     className="w-4 h-4 text-blue-400"
                     strokeWidth={1.8}
                   />
@@ -159,40 +160,53 @@ const Login = () => {
 
                 <div>
                   <h3 className="text-sm font-medium text-white">
-                    Inventory Management
+                    Healthcare & Wellness
                   </h3>
 
                   <p className="text-xs text-slate-500 mt-1">
-                    Track products, stock levels and warehouse activity.
+                    Explore medicines, wellness products and everyday healthcare essentials.
                   </p>
                 </div>
               </div>
+
             </div>
           </div>
 
           {/* Bottom */}
           <div className="text-xs text-slate-600">
-            © {new Date().getFullYear()} Warehouse OS
+            © {new Date().getFullYear()} Healthcare Care
           </div>
+
         </div>
       </div>
 
       {/* ================= RIGHT PANEL ================= */}
       <div className="flex-1 flex items-center justify-center px-5 py-10 sm:px-8">
+
         <div className="w-full max-w-md">
+
           {/* Mobile Brand */}
           <div className="lg:hidden flex justify-center mb-10">
             <Link to="/" className="flex items-center gap-3">
+
               <div className="w-10 h-10 flex items-center justify-center bg-blue-500/10 border border-blue-500/30">
-                <WarehouseIcon
+                <HeartPulseIcon
                   className="w-5 h-5 text-blue-400"
                   strokeWidth={1.8}
                 />
               </div>
 
-              <div className="font-semibold tracking-[0.12em]">
-                WAREHOUSE<span className="text-blue-400">-OS</span>
+              <div>
+                <div className="font-semibold tracking-[0.12em]">
+                  HEALTHCARE
+                  <span className="text-blue-400">-CARE</span>
+                </div>
+
+                <div className="text-[9px] text-slate-500 tracking-[0.25em] uppercase mt-1">
+                  Health • Wellness • Care
+                </div>
               </div>
+
             </Link>
           </div>
 
@@ -207,12 +221,13 @@ const Login = () => {
             </h2>
 
             <p className="text-sm text-slate-500 mt-3">
-              Access your warehouse operations and inventory dashboard.
+              Access your healthcare account and explore products for your everyday wellness.
             </p>
           </div>
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
+
             {/* Email */}
             <div>
               <label className="block text-xs font-medium text-slate-400 mb-2">
@@ -343,10 +358,13 @@ const Login = () => {
               </Link>
             </p>
           </div>
+
         </div>
       </div>
+
     </div>
   );
 };
 
 export default Login;
+

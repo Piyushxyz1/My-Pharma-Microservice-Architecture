@@ -56,7 +56,7 @@ const ProductPage = () => {
 
 
   return (
-    <div className="min-h-screen bg-[#f7f9fc] text-[#0a1929]">
+    <div className="min-h-screen bg-[#f7f9fc] text-[#0a1929] m-10">
 
       {/* ================= HERO ================= */}
 
@@ -97,14 +97,6 @@ const ProductPage = () => {
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
-
-              <a
-                href="#products"
-                className="flex h-12 items-center gap-2 bg-[#2563eb] px-6 text-sm font-bold text-white transition hover:bg-blue-500"
-              >
-                Shop Products
-                <ArrowRight size={17} />
-              </a>
 
               <div className="flex items-center gap-2 px-3 text-sm text-slate-300">
                 <ShieldCheck

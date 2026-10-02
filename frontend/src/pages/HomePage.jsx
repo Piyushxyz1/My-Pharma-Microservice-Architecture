@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
   ArrowRight,
@@ -17,506 +16,641 @@ import { medicalProducts, categories } from "../assets/products";
 
 const HomePage = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+
   const { addToCart } = useCart();
 
-  const filteredProducts = medicalProducts.filter((product) => {
-    const search = searchTerm.toLowerCase();
+  // ================================
+  // CATEGORY FILTER
+  // ================================
+  const handleCategory = (categoryName) => {
+    setSelectedCategory(categoryName);
 
-    return (
+    setTimeout(() => {
+      document
+        .getElementById("products")
+        ?.scrollIntoView({ behavior: "smooth" });
+    }, 50);
+  };
+
+  // ================================
+  // CLEAR CATEGORY
+  // ================================
+  const clearCategory = () => {
+    setSelectedCategory("");
+  };
+
+  // ================================
+  // PRODUCT FILTER
+  // ================================
+  const filteredProducts = medicalProducts.filter((product) => {
+    const search = searchTerm.toLowerCase().trim();
+
+    const matchesSearch =
       product.name.toLowerCase().includes(search) ||
-      product.category.toLowerCase().includes(search)
-    );
+      product.category.toLowerCase().includes(search);
+
+    const matchesCategory =
+      !selectedCategory || product.category === selectedCategory;
+
+    return matchesSearch && matchesCategory;
   });
+
+  // ================================
+  // TRUST FEATURES
+  // ================================
+  const trustFeatures = [
+    {
+      icon: ShieldCheck,
+      title: "Quality Products",
+      text: "Trusted healthcare essentials",
+    },
+    {
+      icon: Truck,
+      title: "Fast Delivery",
+      text: "Quick doorstep delivery",
+    },
+    {
+      icon: Clock,
+      title: "Easy Ordering",
+      text: "Simple and secure shopping",
+    },
+    {
+      icon: HeartPulse,
+      title: "Health First",
+      text: "Products selected for you",
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-[#f5f8fb] text-slate-900">
 
       {/* =====================================================
-          HERO
-      ====================================================== */}
+          HERO / INTRO
+      ===================================================== */}
+      <section className="relative overflow-hidden bg-[#061827]">
 
-      <section className="relative overflow-hidden bg-[#061827] text-white">
+        {/* Background decoration */}
+        <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-blue-500/10 blur-3xl" />
 
-        {/* Background glow */}
-        <div className="absolute -top-32 -right-32 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-[450px] h-[450px] bg-cyan-500/5 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -left-20 h-96 w-96 rounded-full bg-cyan-400/10 blur-3xl" />
 
-        <div className="relative max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 py-20 lg:py-24">
+        <div className="relative mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-24">
 
-          <div className="grid lg:grid-cols-[1.05fr_.95fr] gap-14 lg:gap-20 items-center">
+          <div className="grid items-center gap-14 lg:grid-cols-2">
 
-            {/* LEFT */}
+            {/* =================================================
+                LEFT CONTENT
+            ================================================= */}
+            <div className="max-w-2xl">
 
-            <div>
-
-              <div className="inline-flex items-center gap-2 border border-blue-400/20 bg-blue-400/10 px-4 py-2 text-sm font-medium text-blue-300">
-                <HeartPulse className="w-4 h-4" />
-                Trusted Medical Store
+              {/* Small Label */}
+              <div className="mb-6 inline-flex items-center gap-2 border border-blue-400/20 bg-blue-400/10 px-4 py-2 text-sm font-medium text-blue-300">
+                <HeartPulse size={16} />
+                Healthcare • Pharmacy
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-[62px] font-semibold tracking-tight leading-[1.08] mt-7">
+              {/* Heading */}
+              <h1 className="text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-6xl">
                 Better care.
                 <span className="block text-blue-400">
                   Better living.
                 </span>
               </h1>
 
-              <p className="text-slate-300 text-lg leading-8 mt-6 max-w-xl">
-                Medicines, wellness products and everyday healthcare
-                essentials — delivered conveniently to your doorstep.
+              {/* Intro */}
+              <p className="mt-6 max-w-xl text-base leading-7 text-slate-300 sm:text-lg">
+                Discover trusted medicines, wellness essentials and everyday
+                healthcare products — all in one simple and reliable place.
               </p>
 
-              {/* SEARCH */}
+              {/* CTA */}
+              <div className="mt-7 flex flex-wrap items-center gap-4">
 
-              <div className="relative max-w-xl mt-9">
-
-                <Search
-                  className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"
-                />
-
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Search medicines, vitamins or healthcare..."
-                  className="w-full h-14 bg-white text-slate-900 pl-13 pr-5 outline-none border border-white/10 shadow-2xl placeholder:text-slate-400 focus:ring-2 focus:ring-blue-500/50"
-                />
-
-              </div>
-
-              <div className="flex flex-wrap items-center gap-4 mt-7">
-
-                <Link
-                  to="/products"
-                  className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 px-6 py-3.5 font-semibold transition"
+                <button
+                  onClick={() =>
+                    document
+                      .getElementById("products")
+                      ?.scrollIntoView({ behavior: "smooth" })
+                  }
+                  className="group inline-flex items-center gap-2 bg-blue-600 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-blue-500"
                 >
                   Shop Medicines
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
 
-                <div className="flex items-center gap-2 text-sm text-slate-400">
-                  <ShieldCheck className="w-4 h-4 text-blue-400" />
-                  Quality healthcare products
+                  <ArrowRight
+                    size={17}
+                    className="transition-transform group-hover:translate-x-1"
+                  />
+                </button>
+
+                <div className="flex items-center gap-3 text-sm text-slate-400">
+
+                  <div className="flex -space-x-2">
+
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-[#061827] bg-blue-100">
+                      <HeartPulse
+                        size={14}
+                        className="text-blue-600"
+                      />
+                    </div>
+
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-[#061827] bg-slate-100">
+                      <Pill
+                        size={14}
+                        className="text-blue-600"
+                      />
+                    </div>
+
+                  </div>
+
+                  <span>
+                    Trusted healthcare essentials
+                  </span>
+
                 </div>
-
               </div>
-
             </div>
 
-            {/* RIGHT */}
-
+            {/* =================================================
+                RIGHT IMAGE
+            ================================================= */}
             <div className="relative">
 
-              <div className="absolute -inset-4 border border-blue-400/10" />
+              <div className="absolute -inset-5 bg-blue-500/10 blur-3xl" />
 
-              <div className="relative overflow-hidden bg-[#0c2439]">
+              <div className="relative overflow-hidden border border-white/10 bg-white/5 p-3">
 
                 <img
-                  src="https://images.unsplash.com/photo-1585435557343-3b092031a831?auto=format&fit=crop&w=1200&q=80"
-                  alt="Medical products"
-                  className="w-full h-[390px] lg:h-[460px] object-cover opacity-90"
+                  src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=1000&q=85"
+                  alt="Healthcare products"
+                  className="h-[380px] w-full object-cover sm:h-[460px]"
                 />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-[#061827]/80 via-transparent to-transparent" />
+                {/* Floating Card */}
+                <div className="absolute bottom-7 left-7 right-7 border border-white/10 bg-[#071a2d]/90 p-5 backdrop-blur-md">
 
-                <div className="absolute bottom-6 left-6 right-6">
+                  <div className="flex items-center justify-between">
 
-                  <div className="bg-[#061827]/90 backdrop-blur-md border border-white/10 p-5">
+                    <div>
 
-                    <div className="flex items-center justify-between">
+                      <p className="text-xs font-medium uppercase tracking-wider text-blue-300">
+                        Healthcare
+                      </p>
 
-                      <div>
-                        <p className="text-xs uppercase tracking-widest text-blue-300">
-                          Healthcare essentials
-                        </p>
+                      <p className="mt-1 text-lg font-semibold text-white">
+                        Everything you need, in one place.
+                      </p>
 
-                        <p className="text-lg font-semibold mt-1">
-                          Everything you need, in one place
-                        </p>
-                      </div>
+                    </div>
 
-                      <div className="hidden sm:flex w-11 h-11 items-center justify-center bg-blue-600">
-                        <Pill className="w-5 h-5" />
-                      </div>
-
+                    <div className="hidden h-11 w-11 items-center justify-center bg-blue-600 sm:flex">
+                      <HeartPulse
+                        size={21}
+                        className="text-white"
+                      />
                     </div>
 
                   </div>
 
                 </div>
-
               </div>
-
             </div>
 
           </div>
-
         </div>
       </section>
-
 
       {/* =====================================================
           TRUST BAR
-      ====================================================== */}
+      ===================================================== */}
+      <section className="border-b border-slate-200 bg-white">
 
-      <section className="bg-white border-b border-slate-200">
+        <div className="mx-auto grid max-w-7xl grid-cols-2 divide-x divide-slate-200 lg:grid-cols-4">
 
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-
-          <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-slate-200">
-
-            {[
-              {
-                icon: ShieldCheck,
-                title: "Quality Products",
-                text: "Carefully selected",
-              },
-              {
-                icon: Truck,
-                title: "Fast Delivery",
-                text: "At your doorstep",
-              },
-              {
-                icon: Clock,
-                title: "Easy Ordering",
-                text: "Simple & convenient",
-              },
-              {
-                icon: HeartPulse,
-                title: "Health First",
-                text: "Made for your care",
-              },
-            ].map((item) => {
-
-              const Icon = item.icon;
-
-              return (
-                <div
-                  key={item.title}
-                  className="flex items-center gap-4 px-4 sm:px-7 py-6 first:pl-0"
-                >
-
-                  <div className="shrink-0 w-11 h-11 bg-blue-50 flex items-center justify-center">
-                    <Icon className="w-5 h-5 text-blue-600" />
-                  </div>
-
-                  <div>
-                    <p className="font-semibold text-sm">
-                      {item.title}
-                    </p>
-
-                    <p className="text-xs text-slate-500 mt-1">
-                      {item.text}
-                    </p>
-                  </div>
-
-                </div>
-              );
-            })}
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      {/* =====================================================
-          CATEGORIES
-      ====================================================== */}
-
-      <section className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 py-20">
-
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5">
-
-          <div>
-
-            <p className="text-xs uppercase tracking-[0.2em] text-blue-600 font-bold">
-              Browse
-            </p>
-
-            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mt-2">
-              Shop by category
-            </h2>
-
-            <p className="text-slate-500 mt-3 max-w-lg">
-              Find the healthcare products you need quickly and easily.
-            </p>
-
-          </div>
-
-          <Link
-            to="/products"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 transition"
-          >
-            View all products
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-
-        </div>
-
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-slate-200 border border-slate-200 mt-10">
-
-          {categories.map((category) => {
-
-            const Icon = category.icon;
+          {trustFeatures.map((item) => {
+            const Icon = item.icon;
 
             return (
-              <button
-                key={category.name}
-                onClick={() =>
-                  handleCategory(category.name)
-                }
-                className="group bg-white p-6 sm:p-7 text-left hover:bg-[#f8fbff] transition"
+              <div
+                key={item.title}
+                className="flex items-center gap-4 px-5 py-6 sm:px-8"
               >
 
-                <div className="w-12 h-12 bg-blue-50 flex items-center justify-center group-hover:bg-blue-600 transition">
-
-                  <Icon className="w-6 h-6 text-blue-600 group-hover:text-white transition" />
-
-                </div>
-
-                <h3 className="font-semibold mt-6">
-                  {category.name}
-                </h3>
-
-                <div className="flex items-center gap-1.5 text-sm text-blue-600 mt-3">
-
-                  Browse
-
-                  <ArrowRight
-                    className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center bg-blue-50">
+                  <Icon
+                    size={20}
+                    className="text-blue-600"
                   />
+                </div>
+
+                <div>
+
+                  <h3 className="text-sm font-semibold text-slate-900">
+                    {item.title}
+                  </h3>
+
+                  <p className="mt-1 text-xs text-slate-500">
+                    {item.text}
+                  </p>
 
                 </div>
 
-              </button>
+              </div>
             );
           })}
 
         </div>
-
       </section>
 
-
       {/* =====================================================
-          PRODUCTS
-      ====================================================== */}
+          CATEGORIES
+      ===================================================== */}
+      <section className="bg-[#f5f8fb] px-6 py-20 lg:px-8">
 
-      <section
-        id="products"
-        className="bg-white border-y border-slate-200 py-20"
-      >
+        <div className="mx-auto max-w-7xl">
 
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-
-          <div className="flex justify-between items-end gap-5 mb-10">
+          {/* Section Heading */}
+          <div className="mb-10 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
 
             <div>
 
-              <p className="text-xs uppercase tracking-[0.2em] text-blue-600 font-bold">
-                Medical Store
+              <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-blue-600">
+                Explore
               </p>
 
-              <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mt-2">
-                Medicines & Healthcare
+              <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                Shop by category
               </h2>
 
-              <p className="text-slate-500 mt-3">
-                Everyday essentials for your health and wellness.
+              <p className="mt-3 max-w-xl text-slate-500">
+                Find the healthcare products you need quickly and easily.
+              </p>
+
+            </div>
+
+            {selectedCategory && (
+              <button
+                onClick={clearCategory}
+                className="text-sm font-semibold text-blue-600 transition hover:text-blue-700"
+              >
+                View all products
+              </button>
+            )}
+
+          </div>
+
+          {/* Categories */}
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-8">
+
+            {categories.map((category) => {
+              const Icon = category.icon;
+
+              const isSelected =
+                selectedCategory === category.name;
+
+              return (
+                <button
+                  key={category.name}
+                  onClick={() => handleCategory(category.name)}
+                  className={`group border p-5 text-left transition-all duration-200 ${
+                    isSelected
+                      ? "border-blue-600 bg-blue-600 text-white shadow-lg shadow-blue-600/15"
+                      : "border-slate-200 bg-white hover:-translate-y-1 hover:border-blue-200 hover:shadow-lg"
+                  }`}
+                >
+
+                  <div
+                    className={`mb-5 flex h-11 w-11 items-center justify-center ${
+                      isSelected
+                        ? "bg-white/15"
+                        : "bg-blue-50 group-hover:bg-blue-100"
+                    }`}
+                  >
+
+                    <Icon
+                      size={21}
+                      className={
+                        isSelected
+                          ? "text-white"
+                          : "text-blue-600"
+                      }
+                    />
+
+                  </div>
+
+                  <p
+                    className={`text-sm font-semibold leading-5 ${
+                      isSelected
+                        ? "text-white"
+                        : "text-slate-800"
+                    }`}
+                  >
+                    {category.name}
+                  </p>
+
+                </button>
+              );
+            })}
+
+          </div>
+        </div>
+      </section>
+
+      {/* =====================================================
+          PRODUCTS
+      ===================================================== */}
+      <section
+        id="products"
+        className="border-y border-slate-200 bg-white px-6 py-20 lg:px-8"
+      >
+
+        <div className="mx-auto max-w-7xl">
+
+          {/* Product Heading */}
+          <div className="mb-10 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
+
+            <div>
+
+              <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-blue-600">
+                {selectedCategory || "Medical Store"}
+              </p>
+
+              <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                {selectedCategory
+                  ? `${selectedCategory} products`
+                  : "Medicines & Healthcare"}
+              </h2>
+
+              <p className="mt-3 max-w-xl text-slate-500">
+                {selectedCategory
+                  ? `Browse ${selectedCategory.toLowerCase()} products.`
+                  : "Browse our healthcare products or choose a category to narrow your search."}
               </p>
 
             </div>
 
             <Link
-              to="/products"
-              className="hidden sm:flex items-center gap-2 text-blue-600 font-semibold text-sm hover:text-blue-700"
+              to="/product-list"
+              className="group inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700"
             >
-              View All
-              <ArrowRight className="w-4 h-4" />
+              View all
+
+              <ArrowRight
+                size={16}
+                className="transition-transform group-hover:translate-x-1"
+              />
             </Link>
 
           </div>
 
-
+          {/* =================================================
+              NO PRODUCTS
+          ================================================= */}
           {filteredProducts.length === 0 ? (
 
-            <div className="text-center py-20 border border-slate-200">
+            <div className="border border-dashed border-slate-300 bg-slate-50 px-6 py-16 text-center">
 
-              <Search className="w-10 h-10 mx-auto text-slate-300" />
+              <div className="mx-auto flex h-14 w-14 items-center justify-center bg-white shadow-sm">
+                <Search
+                  size={24}
+                  className="text-slate-400"
+                />
+              </div>
 
-              <h3 className="font-semibold text-lg mt-5">
+              <h3 className="mt-5 text-lg font-semibold text-slate-800">
                 No products found
               </h3>
 
-              <p className="text-slate-500 mt-2">
-                Try another medicine or category.
+              <p className="mt-2 text-sm text-slate-500">
+                Try searching for another healthcare product or category.
               </p>
+
+              {selectedCategory && (
+                <button
+                  onClick={clearCategory}
+                  className="mt-5 text-sm font-semibold text-blue-600 hover:text-blue-700"
+                >
+                  Clear category filter
+                </button>
+              )}
 
             </div>
 
           ) : (
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            /* =================================================
+                PRODUCT GRID
+                DEFAULT = 10 PRODUCTS
+            ================================================= */
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
 
-              {filteredProducts.slice(0,8).map((product) => (
+              {filteredProducts.slice(0, 10).map((product) => (
 
                 <div
                   key={product.id}
-                  className="group bg-white border border-slate-200 overflow-hidden hover:border-blue-200 hover:shadow-[0_15px_40px_rgba(15,23,42,0.08)] transition-all duration-300"
+                  className="group flex flex-col border border-slate-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl"
                 >
 
-                  {/* IMAGE */}
-
+                  {/* PRODUCT IMAGE */}
                   <Link
                     to={`/products/${product.id}`}
-                    className="relative block h-60 bg-[#f3f6f9] overflow-hidden"
+                    className="relative block overflow-hidden bg-slate-50"
                   >
 
                     <img
                       src={product.image}
                       alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500"
+                      className="h-56 w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
 
-                    <div className="absolute top-4 left-4 px-2.5 py-1 bg-white/95 text-[10px] uppercase tracking-wider font-bold text-blue-600">
-                      {product.category}
-                    </div>
+                    {/* Discount */}
+                    {product.discount && (
+                      <span className="absolute left-3 top-3 bg-blue-600 px-2.5 py-1 text-xs font-semibold text-white">
+                        {product.discount}% OFF
+                      </span>
+                    )}
+
+                    {/* Stock */}
+                    <span
+                      className={`absolute right-3 top-3 px-2.5 py-1 text-xs font-semibold ${
+                        product.stock > 0
+                          ? "bg-white text-emerald-600"
+                          : "bg-white text-red-600"
+                      }`}
+                    >
+                      {product.stock > 0
+                        ? "In Stock"
+                        : "Out of Stock"}
+                    </span>
 
                   </Link>
 
+                  {/* PRODUCT CONTENT */}
+                  <div className="flex flex-1 flex-col p-5">
 
-                  {/* DETAILS */}
+                    {/* Category + Rating */}
+                    <div className="mb-3 flex items-center justify-between gap-3">
 
-                  <div className="p-5">
+                      <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">
+                        {product.category}
+                      </span>
 
-                    <Link
-                      to={`/products/${product.id}`}
-                    >
+                      <div className="flex items-center gap-1 text-xs text-slate-500">
 
-                      <h3 className="font-semibold text-[16px] leading-6 hover:text-blue-600 transition">
+                        <Star
+                          size={13}
+                          fill="currentColor"
+                          className="text-amber-400"
+                        />
+
+                        {product.rating}
+
+                      </div>
+
+                    </div>
+
+                    {/* Product Name */}
+                    <Link to={`/products/${product.id}`}>
+
+                      <h3 className="line-clamp-2 min-h-[48px] text-base font-semibold leading-6 text-slate-900 transition-colors group-hover:text-blue-600">
                         {product.name}
                       </h3>
 
                     </Link>
 
-
-                    <div className="flex items-center gap-2 mt-3">
-
-                      <div className="flex items-center gap-1">
-
-                        <Star className="w-4 h-4 text-amber-400 fill-current" />
-
-                        <span className="text-sm font-medium">
-                          {product.rating}
-                        </span>
-
-                      </div>
-
-                      <span className="w-1 h-1 bg-slate-300 rounded-full" />
-
-                      <span className="text-xs text-slate-500">
-                        {product.stock} available
-                      </span>
-
-                    </div>
-
-
-                    <p className="text-sm text-slate-500 leading-6 mt-3 line-clamp-2 min-h-[48px]">
+                    {/* Description */}
+                    <p className="mt-2 line-clamp-2 min-h-[40px] text-sm leading-5 text-slate-500">
                       {product.description}
                     </p>
 
+                    {/* Bottom */}
+                    <div className="mt-auto pt-5">
 
-                    <div className="flex items-end justify-between mt-5">
+                      {/* Price */}
+                      <div className="mb-4 flex items-end justify-between">
 
-                      <div>
+                        <div>
 
-                        <p className="text-xs text-slate-400 uppercase tracking-wide">
-                          Price
-                        </p>
+                          <span className="text-xl font-bold text-slate-900">
+                            ₹{product.price}
+                          </span>
 
-                        <span className="text-xl font-bold text-slate-900">
-                          ₹{product.price}
+                          {product.oldPrice && (
+                            <span className="ml-2 text-sm text-slate-400 line-through">
+                              ₹{product.oldPrice}
+                            </span>
+                          )}
+
+                        </div>
+
+                        <span className="text-xs text-slate-400">
+                          {product.reviews} reviews
                         </span>
 
                       </div>
 
+                      {/* Add To Cart */}
+                      <button
+                        onClick={() => addToCart(product)}
+                        disabled={product.stock <= 0}
+                        className={`flex w-full items-center justify-center gap-2 px-4 py-3 text-sm font-semibold transition ${
+                          product.stock > 0
+                            ? "bg-[#071a2d] text-white hover:bg-blue-600"
+                            : "cursor-not-allowed bg-slate-100 text-slate-400"
+                        }`}
+                      >
+
+                        <ShoppingCart size={17} />
+
+                        {product.stock > 0
+                          ? "Add to Cart"
+                          : "Out of Stock"}
+
+                      </button>
+
                     </div>
-
-
-                    <button
-                      onClick={() =>
-                        addToCart(product)
-                      }
-                      className="w-full mt-5 flex items-center justify-center gap-2 bg-[#0a2035] hover:bg-blue-600 text-white py-3 font-semibold transition-colors duration-300"
-                    >
-
-                      <ShoppingCart className="w-4 h-4" />
-
-                      Add to Cart
-
-                    </button>
-
                   </div>
-
                 </div>
 
               ))}
 
             </div>
-
           )}
 
+          {/* =================================================
+              CATEGORY BROWSE MESSAGE
+          ================================================= */}
+          {!selectedCategory &&
+            filteredProducts.length > 10 && (
+              <div className="mt-10 border-t border-slate-200 pt-7 text-center">
+
+                <p className="text-sm text-slate-500">
+                  Showing 10 products. Browse by category to find
+                  exactly what you need.
+                </p>
+
+                <Link
+                  to="/product-list"
+                  className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700"
+                >
+                  Browse all products
+
+                  <ArrowRight size={15} />
+                </Link>
+
+              </div>
+            )}
+
         </div>
-
       </section>
-
 
       {/* =====================================================
           FINAL CTA
-      ====================================================== */}
+      ===================================================== */}
+      <section className="bg-[#061827] px-6 py-20 lg:px-8">
 
-      <section className="bg-[#061827] text-white">
+        <div className="mx-auto max-w-5xl text-center">
 
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 py-20">
-
-          <div className="relative overflow-hidden border border-blue-400/10 bg-[#0a2035]">
-
-            <div className="absolute -right-24 -top-24 w-72 h-72 rounded-full bg-blue-500/10 blur-3xl" />
-
-            <div className="relative max-w-3xl mx-auto text-center px-6 py-16">
-
-              <div className="w-14 h-14 mx-auto flex items-center justify-center bg-blue-600">
-
-                <Pill className="w-7 h-7" />
-
-              </div>
-
-              <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mt-6">
-                Healthcare shopping,
-                <span className="text-blue-400"> made simple.</span>
-              </h2>
-
-              <p className="text-slate-400 leading-7 mt-4 max-w-xl mx-auto">
-                Browse our healthcare collection and find the products
-                you need for your everyday wellness.
-              </p>
-
-              <Link
-                to="/products"
-                className="inline-flex items-center gap-2 mt-8 bg-blue-600 hover:bg-blue-500 text-white px-7 py-3.5 font-semibold transition"
-              >
-                Explore Products
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-
-            </div>
-
+          <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center bg-blue-600">
+            <HeartPulse
+              size={26}
+              className="text-white"
+            />
           </div>
 
-        </div>
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-400">
+            Your health matters
+          </p>
 
+          <h2 className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
+            Healthcare shopping,
+            <span className="block text-blue-400">
+              made simple.
+            </span>
+          </h2>
+
+          <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-slate-400">
+            Find trusted medicines, wellness products and healthcare
+            essentials without making your shopping complicated.
+          </p>
+
+          <button
+            onClick={() =>
+              document
+                .getElementById("products")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }
+            className="group mt-8 inline-flex items-center gap-2 bg-blue-600 px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-blue-500"
+          >
+            Explore Products
+
+            <ArrowRight
+              size={17}
+              className="transition-transform group-hover:translate-x-1"
+            />
+          </button>
+
+        </div>
       </section>
 
     </div>
@@ -524,4 +658,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
