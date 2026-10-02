@@ -16,7 +16,7 @@ import {
 } from "../../store/cartSlice";
 
 
-const CART_API_URL = CART_API.CART;
+const API = CART_API.API;
 
 
 const useCart = () => {
@@ -45,7 +45,7 @@ const useCart = () => {
       }
 
       const response = await fetch(
-        `${CART_API_URL}/api/cart`,
+        `${API}/api/cart`,
         {
           method: "GET",
           headers: {
@@ -98,7 +98,7 @@ const useCart = () => {
       }
 
       const response = await fetch(
-        `${CART_API_URL}/api/cart/add`,
+        `${API}/api/cart/add`,
         {
           method: "POST",
 
@@ -170,7 +170,7 @@ const useCart = () => {
       }
 
       const response = await fetch(
-        `${CART_API_URL}/api/cart/update/${productId}`,
+        `${API}/api/cart/update/${productId}`,
         {
           method: "PATCH",
 
@@ -233,7 +233,7 @@ const useCart = () => {
       }
 
       const response = await fetch(
-        `${CART_API_URL}/api/cart/remove/${productId}`,
+        `${API}/api/cart/remove/${productId}`,
         {
           method: "DELETE",
 
@@ -293,7 +293,7 @@ const clearCartFromDatabase = async () => {
     }
 
     const response = await fetch(
-      `${CART_API_URL}/api/cart/clear`,
+      `${API}/api/cart/clear`,
       {
         method: "DELETE",
         headers: {

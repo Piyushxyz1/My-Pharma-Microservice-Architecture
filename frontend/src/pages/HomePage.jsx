@@ -390,7 +390,7 @@ const HomePage = () => {
             </div>
 
             <Link
-              to="/product-list"
+              to="/products"
               className="group inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700"
             >
               View all

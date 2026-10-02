@@ -468,48 +468,7 @@ const ProductPage = () => {
       </section>
 
 
-      {/* ================= BOTTOM CTA ================= */}
-
-      <section className="mx-auto max-w-7xl px-6 py-14 md:px-10 lg:px-16">
-
-        <div className="relative overflow-hidden bg-[#0a1929] px-7 py-10 md:px-12">
-
-          <div className="absolute right-0 top-0 h-full w-1/3 opacity-20">
-            <img
-              src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80"
-              alt=""
-              className="h-full w-full object-cover"
-            />
-          </div>
-
-          <div className="relative max-w-2xl">
-
-            <p className="text-xs font-bold uppercase tracking-[2px] text-blue-400">
-              Healthcare made simple
-            </p>
-
-            <h2 className="mt-3 text-2xl font-bold text-white md:text-3xl">
-              Take care of what matters most.
-            </h2>
-
-            <p className="mt-3 text-sm leading-6 text-slate-300">
-              Browse our healthcare collection and find
-              everyday essentials in just a few clicks.
-            </p>
-
-            <a
-              href="#products"
-              className="mt-6 inline-flex h-11 items-center gap-2 bg-[#2563eb] px-5 text-sm font-bold text-white transition hover:bg-blue-500"
-            >
-              Explore Products
-              <ArrowRight size={16} />
-            </a>
-
-          </div>
-
-        </div>
-
-      </section>
+   
 
     </div>
   );

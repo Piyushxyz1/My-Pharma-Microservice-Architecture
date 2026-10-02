@@ -17,7 +17,7 @@ import useCart from "../components/hooks/useCart";
 import PAYMENT_API from "../config/api"
 
 const CheckoutPage = () => {
-  const PAYMENT_API_URL = PAYMENT_API.PAYMENT
+  const API = PAYMENT_API.API
   const navigate = useNavigate();
   const {clearCartFromDatabase} = useCart()
   const cartItems = useSelector(
@@ -169,7 +169,7 @@ const CheckoutPage = () => {
       // =========================
 
       const { data } = await axios.post(
-        `${PAYMENT_API_URL}/api/payment/create-order`,
+        `${API}/api/payment/create-order`,
         {
           amount: total,
         },
@@ -207,7 +207,7 @@ const CheckoutPage = () => {
             // =========================
 
             await axios.post(
-              `${PAYMENT_API_URL}/api/payment/verify`,
+              `${API}/api/payment/verify`,
               {
                 razorpay_order_id:
                   response.razorpay_order_id,

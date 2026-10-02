@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 import ORDERS_API from "../config/api"
 
 const Orders = () => {
-  const ORDERS_API_URL = ORDERS_API.ORDER
+  const API = ORDERS_API.API
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -29,7 +29,7 @@ const Orders = () => {
         }
 
         const response = await axios.get(
-          `${ORDERS_API_URL}/api/orders`,
+          `${API}/api/orders`,
           {
             headers: {
               token: token,

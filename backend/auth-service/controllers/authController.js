@@ -53,7 +53,7 @@ export const login = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1d" },
     );
-    res.status(200).json({ message: "Login successful", token });
+    res.status(200).json({ message: "Login successful", token,user:user.name });
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ message: "Unable to login" });
