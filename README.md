@@ -154,8 +154,4 @@ My-Pharma is a MERN-based medical e-commerce project developed to practice micro
 
 **Piyush Negi**
 
-Full Stack Developer
 
-GitHub: `<your-github-profile>`
-
-Portfolio: `<your-portfolio>`
