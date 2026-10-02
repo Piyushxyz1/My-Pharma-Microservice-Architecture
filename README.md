@@ -45,7 +45,7 @@ The application separates authentication, cart management, payment processing an
 
 * Git
 * GitHub
-* Postman
+* Thunderclient
 
 ## Microservices Architecture
 
