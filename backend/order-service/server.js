@@ -12,7 +12,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/orders", orderRoutes);
+app.use("/", orderRoutes);
 
 app.get("/health", (req, res) => {
   res.json({

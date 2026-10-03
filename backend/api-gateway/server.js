@@ -42,9 +42,9 @@ app.use(
     target: process.env.AUTH_SERVICE_URL,
     changeOrigin: true,
 
-    pathRewrite: (path) => {
-      return `/api/auth${path}`;
-    },
+    // pathRewrite: (path) => {
+    //   return `/api/auth${path}`;
+    // },
   })
 );
 
@@ -60,9 +60,9 @@ app.use(
     target: process.env.CART_SERVICE_URL,
     changeOrigin: true,
 
-    pathRewrite: (path) => {
-      return `/api/cart${path}`;
-    },
+    // pathRewrite: (path) => {
+    //   return `/api/cart${path}`;
+    // },
   })
 );
 
@@ -78,9 +78,9 @@ app.use(
     target: process.env.PAYMENT_SERVICE_URL,
     changeOrigin: true,
 
-    pathRewrite: (path) => {
-      return `/api/payment${path}`;
-    },
+    // pathRewrite: (path) => {
+    //   return `/api/payment${path}`;
+    // },
   })
 );
 
@@ -96,9 +96,9 @@ app.use(
     target: process.env.ORDER_SERVICE_URL,
     changeOrigin: true,
 
-    pathRewrite: (path) => {
-      return `/api/orders${path}`;
-    },
+    // pathRewrite: (path) => {
+    //   return `/api/orders${path}`;
+    // },
   })
 );
 
