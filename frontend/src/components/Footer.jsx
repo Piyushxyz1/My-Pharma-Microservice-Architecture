@@ -224,7 +224,7 @@ const Footer = () => {
 
               <div>
                 <span className="block font-mono text-xl font-bold tracking-tight text-white">
-                  MEDICAL-STORE
+                  MY-PHARMA
                 </span>
 
                 <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-blue-400">
@@ -428,7 +428,7 @@ const Footer = () => {
 
             <p className="text-xs text-slate-600">
 
-              © {currentYear} MEDICAL-STORE. All rights reserved.
+              © {currentYear} MY-PHARMA. All rights reserved.
 
               <span className="mx-2 text-slate-700">|</span>
 

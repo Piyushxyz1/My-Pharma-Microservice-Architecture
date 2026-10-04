@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import {
   ShoppingCartIcon,
@@ -13,17 +14,18 @@ import {
   ChevronDownIcon,
   LogOutIcon,
   PackageIcon,
+  LogInIcon,
 } from "lucide-react";
+
 import {
   Link,
-  useResolvedPath,
   useNavigate,
+  useLocation,
 } from "react-router-dom";
-import { useDispatch } from "react-redux";
+
+import { useDispatch, useSelector } from "react-redux";
 import useCart from "./hooks/useCart";
 import { logout } from "../store/authSlice";
-import axios from "axios";
-import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -31,17 +33,57 @@ const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isAccountOpen, setIsAccountOpen] = useState(false);
 
-  const username = useSelector((state)=>state.auth.user)
   const accountRef = useRef(null);
-
-  const { cartItems } = useCart();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { pathname } = useResolvedPath("/");
+  // =========================
+  // CURRENT URL
+  // =========================
+
+  const { pathname } = useLocation();
+
+  const isLoginPage = pathname === "/login";
   const isHomePage = pathname === "/";
 
+  // =========================
+  // REDUX AUTH STATE
+  // =========================
+
+  const username = useSelector((state) => state.auth.user);
+
+  const isAuthenticated = useSelector(
+    (state) => state.auth.isAuthenticated
+  );
+
+  const { cartItems } = useCart();
+
+  // =========================
+  // NAVIGATION LINKS
+  // =========================
+
+  const navLinks = [
+    {
+      path: "/",
+      label: "Home",
+      icon: HomeIcon,
+    },
+    {
+      path: "/about",
+      label: "About Us",
+      icon: ShoppingBagIcon,
+    },
+    {
+      path: "/services",
+      label: "Services",
+      icon: PillIcon,
+    },
+  ];
+
+  // =========================
+  // SCROLL EFFECT
+  // =========================
 
   useEffect(() => {
     const handleScroll = () => {
@@ -55,7 +97,11 @@ const Navbar = () => {
     };
   }, []);
 
-  // Close account dropdown when clicking outside
+  // =========================
+  // CLOSE ACCOUNT DROPDOWN
+  // WHEN CLICKING OUTSIDE
+  // =========================
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -76,7 +122,10 @@ const Navbar = () => {
     };
   }, []);
 
-  // Close dropdown with Escape
+  // =========================
+  // CLOSE DROPDOWN WITH ESC
+  // =========================
+
   useEffect(() => {
     const handleEscape = (event) => {
       if (event.key === "Escape") {
@@ -87,9 +136,16 @@ const Navbar = () => {
     document.addEventListener("keydown", handleEscape);
 
     return () => {
-      document.removeEventListener("keydown", handleEscape);
+      document.removeEventListener(
+        "keydown",
+        handleEscape
+      );
     };
   }, []);
+
+  // =========================
+  // SEARCH
+  // =========================
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -104,6 +160,10 @@ const Navbar = () => {
     }
   };
 
+  // =========================
+  // LOGOUT
+  // =========================
+
   const handleLogout = () => {
     dispatch(logout());
 
@@ -115,23 +175,16 @@ const Navbar = () => {
     navigate("/");
   };
 
-  const navLinks = [
-    {
-      path: "/",
-      label: "Home",
-      icon: HomeIcon,
-    },
-    {
-      path: "/about",
-      label: "About Us",
-      icon: ShoppingBagIcon,
-    },
-    {
-      path: "/services",
-      label: "Services",
-      icon: PillIcon,
-    },
-  ];
+  // =========================
+  // LOGIN
+  // =========================
+
+  const handleLogin = () => {
+    setIsAccountOpen(false);
+    setIsMenuOpen(false);
+
+    navigate("/login");
+  };
 
   return (
     <header
@@ -146,6 +199,7 @@ const Navbar = () => {
       `}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
         <div className="h-[72px] flex items-center justify-between gap-5">
 
           {/* ================= LOGO ================= */}
@@ -155,23 +209,31 @@ const Navbar = () => {
             className="flex items-center gap-3 shrink-0 group"
           >
             <div className="leading-none">
+
               <div className="text-white font-semibold tracking-[0.12em] text-[15px] sm:text-[17px]">
-                MEDICAL
-                <span className="text-blue-400">-STORE</span>
+                MY
+                <span className="text-blue-400">
+                  -PHARMA
+                </span>
               </div>
 
               <div className="hidden sm:block text-[9px] text-slate-500 tracking-[0.25em] mt-1.5 uppercase">
                 Healthcare • Pharmacy
               </div>
+
             </div>
           </Link>
 
           {/* ================= DESKTOP NAV ================= */}
 
           <nav className="hidden lg:flex items-center h-full">
+
             <div className="flex items-center gap-1">
+
               {navLinks.map((link) => {
+
                 const Icon = link.icon;
+
                 const isActive = pathname === link.path;
 
                 return (
@@ -190,6 +252,7 @@ const Navbar = () => {
                       }
                     `}
                   >
+
                     <Icon
                       className={`w-[17px] h-[17px] ${
                         isActive
@@ -201,23 +264,25 @@ const Navbar = () => {
 
                     <span>{link.label}</span>
 
-                    {isActive && (
-                      <span className="absolute bottom-[-1px] left-4 right-4 h-[2px] bg-blue-500" />
-                    )}
                   </Link>
                 );
               })}
+
             </div>
+
           </nav>
 
           {/* ================= SEARCH ================= */}
 
           <div className="hidden md:flex flex-1 max-w-[360px] lg:max-w-[420px]">
+
             <form
               onSubmit={handleSearch}
               className="w-full"
             >
+
               <div className="relative group">
+
                 <SearchIcon
                   className="
                     absolute left-3.5 top-1/2
@@ -251,15 +316,18 @@ const Navbar = () => {
                     focus:bg-[#0d253d]
                   "
                 />
+
               </div>
+
             </form>
+
           </div>
 
           {/* ================= ACTIONS ================= */}
 
           <div className="flex items-center gap-1 shrink-0">
 
-            {/* Wishlist */}
+            {/* ================= WISHLIST ================= */}
 
             {isHomePage && (
               <button
@@ -282,7 +350,7 @@ const Navbar = () => {
               </button>
             )}
 
-            {/* Cart */}
+            {/* ================= CART ================= */}
 
             {isHomePage && (
               <Link
@@ -298,6 +366,7 @@ const Navbar = () => {
                   transition-all duration-300
                 "
               >
+
                 <ShoppingCartIcon
                   className="w-[21px] h-[21px] text-blue-400"
                   strokeWidth={1.8}
@@ -326,157 +395,213 @@ const Navbar = () => {
                     {cartItems.length}
                   </span>
                 )}
+
               </Link>
             )}
 
-            {/* Divider */}
+            {/* ================= DIVIDER ================= */}
 
-            <div className="hidden md:block w-px h-7 bg-white/10 mx-2" />
+            {!isLoginPage && (
+              <div className="hidden md:block w-px h-7 bg-white/10 mx-2" />
+            )}
 
             {/* ================= ACCOUNT ================= */}
 
-            <div
-              ref={accountRef}
-              className="relative"
-            >
-              <button
-                onClick={() =>
-                  setIsAccountOpen(!isAccountOpen)
-                }
-                className="
-                  flex items-center gap-2
-                  h-10
-                  px-2.5
-                  text-slate-300
-                  hover:text-white
-                  hover:bg-white/[0.05]
-                  transition-all duration-200
-                "
-                aria-label="Account menu"
-                aria-expanded={isAccountOpen}
+            {!isLoginPage && (
+              <div
+                ref={accountRef}
+                className="relative"
               >
-                <div className="
-                  w-8 h-8
-                  flex items-center justify-center
-                  bg-blue-500/10
-                  border border-blue-500/20
-                  text-blue-400
-                ">
-                  <UserIcon
-                    className="w-[17px] h-[17px]"
-                    strokeWidth={1.8}
-                  />
-                </div>
 
-
-                <ChevronDownIcon
-                  className={`
-                    hidden sm:block
-                    w-4 h-4
-                    text-slate-500
-                    transition-transform duration-200
-                    ${
-                      isAccountOpen
-                        ? "rotate-180"
-                        : ""
-                    }
-                  `}
-                  strokeWidth={1.8}
-                />
-              </button>
-
-              {/* Account Dropdown */}
-
-              {isAccountOpen && (
-                <div
+                <button
+                  onClick={() =>
+                    setIsAccountOpen(!isAccountOpen)
+                  }
                   className="
-                    absolute
-                    right-0
-                    top-[52px]
-                    w-56
-                    bg-[#0b2035]
-                    border border-white/[0.08]
-                    shadow-[0_18px_50px_rgba(0,0,0,0.35)]
-                    overflow-hidden
+                    flex items-center gap-2
+                    h-10
+                    px-2.5
+                    text-slate-300
+                    hover:text-white
+                    hover:bg-white/[0.05]
+                    transition-all duration-200
                   "
+                  aria-label="Account menu"
+                  aria-expanded={isAccountOpen}
                 >
-                  {/* User Header */}
 
-                  <div className="
-                    px-4 py-3.5
-                    border-b border-white/[0.07]
-                  ">
-                    <p className="text-[11px] text-slate-500 uppercase tracking-[0.15em]">
-                      Signed in as
-                    </p>
-
-                    <p className="
-                      mt-1
-                      text-sm
-                      text-white
-                      font-medium
-                      truncate
-                    ">
-                      {username}
-                    </p>
-                  </div>
-
-                 
-
-            
-                  {/* Orders */}
-
-                  <button
-                    onClick={() => {
-                      navigate("/orders");
-                      setIsAccountOpen(false);
-                    }}
+                  <div
                     className="
-                      w-full
-                      px-4 py-3
-                      flex items-center gap-3
-                      text-sm text-slate-300
-                      hover:text-white
-                      hover:bg-white/[0.05]
-                      transition-colors
+                      w-8 h-8
+                      flex items-center justify-center
+                      bg-blue-500/10
+                      border border-blue-500/20
+                      text-blue-400
                     "
                   >
-                    <PackageIcon
-                      className="w-[17px] h-[17px] text-slate-500"
+                    <UserIcon
+                      className="w-[17px] h-[17px]"
                       strokeWidth={1.8}
                     />
-
-                    My Orders
-                  </button>
-
-                  {/* Logout */}
-
-                  <div className="border-t border-white/[0.07]">
-                    <button
-                      onClick={handleLogout}
-                      className="
-                        w-full
-                        px-4 py-3
-                        flex items-center gap-3
-                        text-sm text-slate-400
-                        hover:text-red-400
-                        hover:bg-red-500/[0.05]
-                        transition-colors
-                      "
-                    >
-                      <LogOutIcon
-                        className="w-[17px] h-[17px]"
-                        strokeWidth={1.8}
-                      />
-
-                      Logout
-                    </button>
                   </div>
-                </div>
-              )}
-            </div>
 
-            {/* Mobile Menu */}
+                  <ChevronDownIcon
+                    className={`
+                      hidden sm:block
+                      w-4 h-4
+                      text-slate-500
+                      transition-transform duration-200
+                      ${
+                        isAccountOpen
+                          ? "rotate-180"
+                          : ""
+                      }
+                    `}
+                    strokeWidth={1.8}
+                  />
+
+                </button>
+
+                {/* ================= DESKTOP ACCOUNT DROPDOWN ================= */}
+
+                {isAccountOpen && (
+                  <div
+                    className="
+                      absolute
+                      right-0
+                      top-[52px]
+                      w-56
+                      bg-[#0b2035]
+                      border border-white/[0.08]
+                      shadow-[0_18px_50px_rgba(0,0,0,0.35)]
+                      overflow-hidden
+                    "
+                  >
+
+                    {/* ================= LOGGED IN ================= */}
+
+                    {isAuthenticated ? (
+                      <>
+
+                        {/* User Header */}
+
+                        <div
+                          className="
+                            px-4 py-3.5
+                            border-b border-white/[0.07]
+                          "
+                        >
+
+                          <p className="text-[11px] text-slate-500 uppercase tracking-[0.15em]">
+                            Signed in as
+                          </p>
+
+                          <p
+                            className="
+                              mt-1
+                              text-sm
+                              text-white
+                              font-medium
+                              truncate
+                            "
+                          >
+                            {username || "User"}
+                          </p>
+
+                        </div>
+
+                        {/* My Orders */}
+
+                        <button
+                          onClick={() => {
+                            navigate("/orders");
+                            setIsAccountOpen(false);
+                          }}
+                          className="
+                            w-full
+                            px-4 py-3
+                            flex items-center gap-3
+                            text-sm text-slate-300
+                            hover:text-white
+                            hover:bg-white/[0.05]
+                            transition-colors
+                          "
+                        >
+
+                          <PackageIcon
+                            className="w-[17px] h-[17px] text-slate-500"
+                            strokeWidth={1.8}
+                          />
+
+                          My Orders
+
+                        </button>
+
+                        {/* Logout */}
+
+                        <div className="border-t border-white/[0.07]">
+
+                          <button
+                            onClick={handleLogout}
+                            className="
+                              w-full
+                              px-4 py-3
+                              flex items-center gap-3
+                              text-sm text-slate-400
+                              hover:text-red-400
+                              hover:bg-red-500/[0.05]
+                              transition-colors
+                            "
+                          >
+
+                            <LogOutIcon
+                              className="w-[17px] h-[17px]"
+                              strokeWidth={1.8}
+                            />
+
+                            Logout
+
+                          </button>
+
+                        </div>
+
+                      </>
+
+                    ) : (
+
+                      /* ================= LOGGED OUT ================= */
+
+                      <button
+                        onClick={handleLogin}
+                        className="
+                          w-full
+                          px-4 py-3.5
+                          flex items-center gap-3
+                          text-sm text-slate-300
+                          hover:text-white
+                          hover:bg-white/[0.05]
+                          transition-colors
+                        "
+                      >
+
+                        <LogInIcon
+                          className="w-[17px] h-[17px] text-blue-400"
+                          strokeWidth={1.8}
+                        />
+
+                        Login
+
+                      </button>
+
+                    )}
+
+                  </div>
+                )}
+
+              </div>
+            )}
+
+            {/* ================= MOBILE MENU BUTTON ================= */}
 
             <button
               onClick={() =>
@@ -494,6 +619,7 @@ const Navbar = () => {
               aria-label="Toggle menu"
               aria-expanded={isMenuOpen}
             >
+
               {isMenuOpen ? (
                 <XIcon
                   className="w-5 h-5"
@@ -505,8 +631,11 @@ const Navbar = () => {
                   strokeWidth={1.8}
                 />
               )}
+
             </button>
+
           </div>
+
         </div>
 
         {/* ================= MOBILE MENU ================= */}
@@ -520,13 +649,16 @@ const Navbar = () => {
               bg-[#071a2d]
             "
           >
-            {/* Mobile Search */}
+
+            {/* ================= MOBILE SEARCH ================= */}
 
             <form
               onSubmit={handleSearch}
               className="mb-5"
             >
+
               <div className="relative">
+
                 <SearchIcon
                   className="
                     absolute left-3.5 top-1/2
@@ -557,14 +689,19 @@ const Navbar = () => {
                     transition-all
                   "
                 />
+
               </div>
+
             </form>
 
-            {/* Mobile Navigation */}
+            {/* ================= MOBILE NAVIGATION ================= */}
 
             <div className="border-t border-white/[0.06]">
+
               {navLinks.map((link) => {
+
                 const Icon = link.icon;
+
                 const isActive =
                   pathname === link.path;
 
@@ -587,7 +724,9 @@ const Navbar = () => {
                       }
                     `}
                   >
+
                     <div className="flex items-center gap-3">
+
                       <Icon
                         className={`w-[18px] h-[18px] ${
                           isActive
@@ -600,138 +739,210 @@ const Navbar = () => {
                       <span className="text-sm">
                         {link.label}
                       </span>
+
                     </div>
 
                     <ChevronRightIcon
                       className="w-4 h-4 text-slate-600"
                       strokeWidth={1.7}
                     />
+
                   </Link>
                 );
               })}
+
             </div>
 
-            {/* Mobile Account */}
+            {/* ================= MOBILE ACCOUNT ================= */}
 
-            <div className="mt-4 border-t border-white/[0.06] pt-4">
-              <button
-                onClick={() =>
-                  setIsAccountOpen(!isAccountOpen)
-                }
-                className="
-                  w-full
-                  flex items-center justify-between
-                  py-3
-                  text-slate-300
-                  hover:text-white
-                "
-              >
-                <div className="flex items-center gap-3">
-                  <div className="
-                    w-9 h-9
-                    flex items-center justify-center
-                    bg-blue-500/10
-                    border border-blue-500/20
-                    text-blue-400
-                  ">
-                    <UserIcon
-                      className="w-[18px] h-[18px]"
-                      strokeWidth={1.8}
-                    />
+            {!isLoginPage && (
+              <div className="mt-4 border-t border-white/[0.06] pt-4">
+
+                <button
+                  onClick={() =>
+                    setIsAccountOpen(!isAccountOpen)
+                  }
+                  className="
+                    w-full
+                    flex items-center justify-between
+                    py-3
+                    text-slate-300
+                    hover:text-white
+                  "
+                >
+
+                  <div className="flex items-center gap-3">
+
+                    <div
+                      className="
+                        w-9 h-9
+                        flex items-center justify-center
+                        bg-blue-500/10
+                        border border-blue-500/20
+                        text-blue-400
+                      "
+                    >
+                      <UserIcon
+                        className="w-[18px] h-[18px]"
+                        strokeWidth={1.8}
+                      />
+                    </div>
+
+                    <div className="text-left">
+
+                      <p className="text-[10px] text-slate-500 uppercase tracking-wider">
+                        Account
+                      </p>
+
+                      <p className="text-sm text-white font-medium">
+                        {isAuthenticated
+                          ? username || "User"
+                          : "Login"}
+                      </p>
+
+                    </div>
+
                   </div>
 
-                  <div className="text-left">
-                    <p className="text-[10px] text-slate-500 uppercase tracking-wider">
-                      Account
-                    </p>
+                  <ChevronDownIcon
+                    className={`
+                      w-4 h-4 text-slate-500
+                      transition-transform
+                      ${
+                        isAccountOpen
+                          ? "rotate-180"
+                          : ""
+                      }
+                    `}
+                    strokeWidth={1.8}
+                  />
 
-                    <p className="text-sm text-white font-medium">
-                      {username}
-                    </p>
+                </button>
+
+                {/* ================= MOBILE ACCOUNT DROPDOWN ================= */}
+
+                {isAccountOpen && (
+                  <div
+                    className="
+                      mt-2
+                      border border-white/[0.07]
+                      bg-[#0b2035]
+                    "
+                  >
+
+                    {isAuthenticated ? (
+                      <>
+
+                        {/* My Account */}
+
+                        <button
+                          onClick={() => {
+                            navigate("/account");
+                            setIsAccountOpen(false);
+                            setIsMenuOpen(false);
+                          }}
+                          className="
+                            w-full
+                            px-4 py-3
+                            flex items-center gap-3
+                            text-sm text-slate-300
+                            hover:text-white
+                            hover:bg-white/[0.05]
+                          "
+                        >
+
+                          <UserIcon className="w-4 h-4" />
+
+                          My Account
+
+                        </button>
+
+                        {/* My Orders */}
+
+                        <button
+                          onClick={() => {
+                            navigate("/orders");
+                            setIsAccountOpen(false);
+                            setIsMenuOpen(false);
+                          }}
+                          className="
+                            w-full
+                            px-4 py-3
+                            flex items-center gap-3
+                            text-sm text-slate-300
+                            hover:text-white
+                            hover:bg-white/[0.05]
+                          "
+                        >
+
+                          <PackageIcon className="w-4 h-4" />
+
+                          My Orders
+
+                        </button>
+
+                        {/* Logout */}
+
+                        <button
+                          onClick={handleLogout}
+                          className="
+                            w-full
+                            px-4 py-3
+                            flex items-center gap-3
+                            border-t border-white/[0.07]
+                            text-sm text-slate-400
+                            hover:text-red-400
+                            hover:bg-red-500/[0.05]
+                          "
+                        >
+
+                          <LogOutIcon className="w-4 h-4" />
+
+                          Logout
+
+                        </button>
+
+                      </>
+
+                    ) : (
+
+                      /* ================= MOBILE LOGIN ================= */
+
+                      <button
+                        onClick={handleLogin}
+                        className="
+                          w-full
+                          px-4 py-3
+                          flex items-center gap-3
+                          text-sm text-slate-300
+                          hover:text-white
+                          hover:bg-white/[0.05]
+                        "
+                      >
+
+                        <LogInIcon
+                          className="w-4 h-4 text-blue-400"
+                        />
+
+                        Login
+
+                      </button>
+
+                    )}
+
                   </div>
-                </div>
+                )}
 
-                <ChevronDownIcon
-                  className={`
-                    w-4 h-4 text-slate-500
-                    transition-transform
-                    ${
-                      isAccountOpen
-                        ? "rotate-180"
-                        : ""
-                    }
-                  `}
-                  strokeWidth={1.8}
-                />
-              </button>
+              </div>
+            )}
 
-              {isAccountOpen && (
-                <div className="
-                  mt-2
-                  border border-white/[0.07]
-                  bg-[#0b2035]
-                ">
-                  <button
-                    onClick={() => {
-                      navigate("/account");
-                      setIsAccountOpen(false);
-                      setIsMenuOpen(false);
-                    }}
-                    className="
-                      w-full
-                      px-4 py-3
-                      flex items-center gap-3
-                      text-sm text-slate-300
-                      hover:text-white
-                      hover:bg-white/[0.05]
-                    "
-                  >
-                    <UserIcon className="w-4 h-4" />
-                    My Account
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      navigate("/orders");
-                      setIsAccountOpen(false);
-                      setIsMenuOpen(false);
-                    }}
-                    className="
-                      w-full
-                      px-4 py-3
-                      flex items-center gap-3
-                      text-sm text-slate-300
-                      hover:text-white
-                      hover:bg-white/[0.05]
-                    "
-                  >
-                    <PackageIcon className="w-4 h-4" />
-                    My Orders
-                  </button>
-
-                  <button
-                    onClick={handleLogout}
-                    className="
-                      w-full
-                      px-4 py-3
-                      flex items-center gap-3
-                      border-t border-white/[0.07]
-                      text-sm text-slate-400
-                      hover:text-red-400
-                      hover:bg-red-500/[0.05]
-                    "
-                  >
-                    <LogOutIcon className="w-4 h-4" />
-                    Logout
-                  </button>
-                </div>
-              )}
-            </div>
           </div>
         )}
+
       </div>
     </header>
   );
 };
 
 export default Navbar;
+
