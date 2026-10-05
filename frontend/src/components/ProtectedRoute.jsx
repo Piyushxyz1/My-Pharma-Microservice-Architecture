@@ -1,12 +1,11 @@
 
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 const ProtectedRoute = ({ children }) => {
   const location = useLocation();
 
-  const token = useSelector((state) => state.auth.token);
+  const token = localStorage.getItem("token");
 
   if (!token) {
     return (
