@@ -29,9 +29,10 @@ mongoose
   .then(() => {
     console.log("Order MongoDB connected");
 
-    app.listen(PORT, () => {
-      console.log(`Order Service running on port ${PORT}`);
-    });
+   app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Order service is running on port ${PORT}`);
+});
+
   })
   .catch((error) => {
     console.error("MongoDB connection error:", error);

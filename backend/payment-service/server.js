@@ -45,8 +45,6 @@ app.get("/health", (req, res) => {
 
 const PORT = process.env.PORT || 5004;
 
-app.listen(PORT, () => {
-  console.log(
-    `Payment Service running on port ${PORT}`
-  );
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Payement Service running on port ${PORT}`);
 });
