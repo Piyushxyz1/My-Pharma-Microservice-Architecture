@@ -68,11 +68,7 @@ export const verifyPayment = async (req, res) => {
     // VALIDATE PAYMENT RESPONSE
     // ===============================
 
-    if (
-      !razorpay_order_id ||
-      !razorpay_payment_id ||
-      !razorpay_signature
-    ) {
+    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
       return res.status(400).json({
         success: false,
         message: "Payment details are incomplete",
@@ -83,20 +79,14 @@ export const verifyPayment = async (req, res) => {
     // CREATE SIGNATURE BODY
     // ===============================
 
-    const body =
-      razorpay_order_id +
-      "|" +
-      razorpay_payment_id;
+    const body = razorpay_order_id + "|" + razorpay_payment_id;
 
     // ===============================
     // GENERATE SIGNATURE
     // ===============================
 
     const expectedSignature = crypto
-      .createHmac(
-        "sha256",
-        process.env.RAZORPAY_KEY_SECRET
-      )
+      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
       .update(body)
       .digest("hex");
 
@@ -116,14 +106,14 @@ export const verifyPayment = async (req, res) => {
     // ===============================
 
     const userId = req.userId;
-    console.log(userId)
+    console.log(userId);
 
     // ===============================
     // SEND ORDER TO ORDER SERVICE
     // ===============================
 
     const orderResponse = await axios.post(
-      "http://localhost:5000/api/orders/create",
+      `${process.env.API_GATEWAY_URL}/api/orders/create`,
       {
         userId,
 
@@ -140,16 +130,13 @@ export const verifyPayment = async (req, res) => {
         totalAmount: amount,
 
         orderStatus: "confirmed",
-        
       },
 
-       {
-    headers: {
-      token: req.headers.token,
-    },
-  }
-     
-      
+      {
+        headers: {
+          token: req.headers.token,
+        },
+      },
     );
 
     // ===============================
@@ -168,20 +155,16 @@ export const verifyPayment = async (req, res) => {
 
       order: orderResponse.data.order,
     });
+  } catch (error) {
+    console.error("Payment verification error:", error.message);
+    console.error("Response:", error.response?.data);
+    console.error("Status:", error.response?.status);
+    console.error("Stack:", error.stack);
 
- 
-    } catch (error) {
-  console.error("Payment verification error:", error.message);
-  console.error("Response:", error.response?.data);
-  console.error("Status:", error.response?.status);
-  console.error("Stack:", error.stack);
-
-  return res.status(500).json({
-    success: false,
-    message: error.message,
-    orderServiceError: error.response?.data || null,
-  });
-}
-
- 
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+      orderServiceError: error.response?.data || null,
+    });
   }
+};
