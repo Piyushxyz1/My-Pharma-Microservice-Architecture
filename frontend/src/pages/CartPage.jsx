@@ -85,7 +85,7 @@ const CartPage = () => {
   if (!cartItems.length) {
 
     return (
-      <main className="min-h-[calc(100vh-80px)] bg-slate-50 px-4 py-10 sm:px-6 lg:px-8">
+      <main className="min-h-[calc(100vh-80px)] bg-slate-50 px-4 pt-24 pb-10 sm:px-6 sm:pt-10 lg:px-8 lg:pt-11">
 
         <div className="mx-auto flex min-h-[550px] max-w-6xl items-center justify-center">
 
@@ -127,7 +127,7 @@ const CartPage = () => {
 
 
   return (
-    <main className="min-h-[calc(100vh-80px)] bg-slate-50 px-4 py-8 sm:px-6 lg:px-8 lg:py-11">
+    <main className="min-h-[calc(100vh-80px)] bg-slate-50 px-4 pt-24 pb-8 sm:px-6 sm:pt-8 lg:px-8 lg:py-11">
 
       <div className="mx-auto max-w-7xl">
 

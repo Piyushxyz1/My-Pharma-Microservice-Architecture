@@ -758,7 +758,7 @@ const Navbar = () => {
             {!isLoginPage && (
               <div className="mt-4 border-t border-white/[0.06] pt-4">
 
-                <button
+                {/* <button
                   onClick={() =>
                     setIsAccountOpen(!isAccountOpen)
                   }
@@ -817,7 +817,7 @@ const Navbar = () => {
                     strokeWidth={1.8}
                   />
 
-                </button>
+                </button> */}
 
                 {/* ================= MOBILE ACCOUNT DROPDOWN ================= */}
 
