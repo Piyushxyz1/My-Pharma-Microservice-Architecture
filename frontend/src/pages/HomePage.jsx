@@ -83,7 +83,7 @@ const HomePage = () => {
   ];
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-[#f5f8fb] pt-16 lg:pt-0 text-slate-900">
+    <div className="min-h-screen overflow-x-hidden bg-[#f5f8fb] lg:pt-0 text-slate-900">
 
       {/* =====================================================
           HERO / INTRO
