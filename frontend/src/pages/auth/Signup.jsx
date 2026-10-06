@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 import AUTH_API from "../../config/api"
 
 const Signup = () => {
-const API = AUTH_API.API
+const API = AUTH_API.GATEWAY_API
 
   const navigate = useNavigate();
 

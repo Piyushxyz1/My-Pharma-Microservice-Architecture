@@ -16,7 +16,7 @@ import { login } from "../../store/authSlice";
 import AUTH_API from "../../config/api";
 
 const Login = () => {
-  const API = AUTH_API.API;
+  const API = AUTH_API.GATEWAY_API;
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
