@@ -16,7 +16,7 @@ import {
 } from "../../store/cartSlice";
 
 
-const API = CART_API.API;
+const API = CART_API.GATEWAY_API;
 
 
 const useCart = () => {

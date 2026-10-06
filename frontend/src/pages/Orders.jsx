@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 import ORDERS_API from "../config/api"
 
 const Orders = () => {
-  const API = ORDERS_API.API
+  const API = ORDERS_API.GATEWAY_API
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 

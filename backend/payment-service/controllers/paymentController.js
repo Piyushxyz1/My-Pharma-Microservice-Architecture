@@ -106,7 +106,7 @@ export const verifyPayment = async (req, res) => {
     // ===============================
 
     const userId = req.userId;
-    console.log(userId);
+  
 
     // ===============================
     // SEND ORDER TO ORDER SERVICE

@@ -17,7 +17,7 @@ import useCart from "../components/hooks/useCart";
 import PAYMENT_API from "../config/api"
 
 const CheckoutPage = () => {
-  const API = PAYMENT_API.API
+  const API = PAYMENT_API.GATEWAY_API
   const navigate = useNavigate();
   const {clearCartFromDatabase} = useCart()
   const cartItems = useSelector(
