@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 import AUTH_API from "../../config/api"
 
 const Signup = () => {
-const API = AUTH_API.GATEWAY_API
+
 
   const navigate = useNavigate();
 
@@ -49,7 +49,7 @@ const API = AUTH_API.GATEWAY_API
       setLoading(true);
 
       const response = await fetch(
-        `${API}/api/auth/signup`,
+        `${AUTH_API.GATEWAY_API}/api/auth/signup`,
         {
           method: "POST",
           headers: {
