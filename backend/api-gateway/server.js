@@ -15,7 +15,9 @@ const PORT = process.env.PORT || 5000;
 // MIDDLEWARE
 // ===============================
 
-app.use(cors());
+app.use(cors({
+  origin: "https://my-pharma-microservice-architecture.vercel.app"
+}));
 app.use(helmet());
 app.use(morgan("dev"));
 
