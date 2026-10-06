@@ -70,7 +70,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#061522] text-white flex mt-10">
+    <div className="min-h-screen bg-[#061522] text-white flex ">
 
       {/* ================= LEFT PANEL ================= */}
       <div className="hidden lg:flex lg:w-[52%] relative overflow-hidden border-r border-white/[0.06]">
