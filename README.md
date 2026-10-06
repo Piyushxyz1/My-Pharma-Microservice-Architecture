@@ -272,35 +272,39 @@ My-Pharma/
 │   ├── public/
 │   └── package.json
 │
-├── auth-service/
-│   ├── controllers/
-│   ├── models/
-│   ├── routes/
-│   ├── middleware/
-│   └── server.js
+├── backend/
+│   │
+│   ├── auth-service/
+│   │   ├── controllers/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── middleware/
+│   │   └── server.js
+│   │
+│   ├── cart-service/
+│   │   ├── controllers/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── middleware/
+│   │   └── server.js
+│   │
+│   ├── payment-service/
+│   │   ├── controllers/
+│   │   ├── routes/
+│   │   └── server.js
+│   │
+│   ├── orders-service/
+│   │   ├── controllers/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── middleware/
+│   │   └── server.js
+│   │
+│   └── api-gateway/
+│       ├── server.js
+│       └── package.json
 │
-├── cart-service/
-│   ├── controllers/
-│   ├── models/
-│   ├── routes/
-│   ├── middleware/
-│   └── server.js
-│
-├── payment-service/
-│   ├── controllers/
-│   ├── routes/
-│   └── server.js
-│
-├── orders-service/
-│   ├── controllers/
-│   ├── models/
-│   ├── routes/
-│   ├── middleware/
-│   └── server.js
-│
-└── api-gateway/
-    ├── server.js
-    └── package.json
+└── package.json
 ```
 
 Each service owns the code related to its particular domain instead of sharing one large backend codebase.
