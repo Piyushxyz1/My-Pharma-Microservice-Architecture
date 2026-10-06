@@ -16,7 +16,7 @@ import { login } from "../../store/authSlice";
 import AUTH_API from "../../config/api";
 
 const Login = () => {
-  const API = AUTH_API.GATEWAY_API;
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -41,7 +41,7 @@ const Login = () => {
     try {
       setLoading(true);
 
-      const response = await fetch(`${API}/api/auth/login`, {
+      const response = await fetch(`${ AUTH_API.GATEWAY_API}/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
