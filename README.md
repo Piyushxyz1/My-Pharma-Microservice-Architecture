@@ -9,7 +9,7 @@ The project was built to work with a distributed backend setup while keeping the
 ## Architecture
 
 ```text
-                         React + Redux Frontend
+                            React Vite Frontend
                                   |
                                   v
                              API Gateway
