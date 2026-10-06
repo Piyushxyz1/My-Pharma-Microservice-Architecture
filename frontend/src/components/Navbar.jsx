@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useRef } from "react";
+
 import {
   ShoppingCartIcon,
   ShoppingBagIcon,
@@ -24,6 +25,7 @@ import {
 } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
+
 import useCart from "./hooks/useCart";
 import { logout } from "../store/authSlice";
 
@@ -45,13 +47,21 @@ const Navbar = () => {
   const { pathname } = useLocation();
 
   const isLoginPage = pathname === "/login";
+
+  // Login + Signup pages
+  const isAuthPage =
+    pathname === "/login" ||
+    pathname === "/signup";
+
   const isHomePage = pathname === "/";
 
   // =========================
   // REDUX AUTH STATE
   // =========================
 
-  const username = useSelector((state) => state.auth.user);
+  const username = useSelector(
+    (state) => state.auth.user
+  );
 
   const isAuthenticated = useSelector(
     (state) => state.auth.isAuthenticated
@@ -112,7 +122,10 @@ const Navbar = () => {
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener(
+      "mousedown",
+      handleClickOutside
+    );
 
     return () => {
       document.removeEventListener(
@@ -133,7 +146,10 @@ const Navbar = () => {
       }
     };
 
-    document.addEventListener("keydown", handleEscape);
+    document.addEventListener(
+      "keydown",
+      handleEscape
+    );
 
     return () => {
       document.removeEventListener(
@@ -152,7 +168,9 @@ const Navbar = () => {
 
     if (searchQuery.trim()) {
       navigate(
-        `/search?q=${encodeURIComponent(searchQuery.trim())}`
+        `/search?q=${encodeURIComponent(
+          searchQuery.trim()
+        )}`
       );
 
       setSearchQuery("");
@@ -234,7 +252,8 @@ const Navbar = () => {
 
                 const Icon = link.icon;
 
-                const isActive = pathname === link.path;
+                const isActive =
+                  pathname === link.path;
 
                 return (
                   <Link
@@ -266,6 +285,7 @@ const Navbar = () => {
 
                   </Link>
                 );
+
               })}
 
             </div>
@@ -331,7 +351,9 @@ const Navbar = () => {
 
             {isHomePage && (
               <button
-                onClick={() => navigate("/wishlist")}
+                onClick={() =>
+                  navigate("/wishlist")
+                }
                 className="
                   relative
                   w-10 h-10
@@ -352,7 +374,15 @@ const Navbar = () => {
 
             {/* ================= CART ================= */}
 
-            {isHomePage && (
+            {/* 
+              Cart hidden only on:
+              /login
+              /signup
+
+              Cart visible everywhere else.
+            */}
+
+            {!isAuthPage && (
               <Link
                 to="/cart"
                 className="
@@ -365,6 +395,7 @@ const Navbar = () => {
                   hover:border-blue-400/50
                   transition-all duration-300
                 "
+                aria-label="Shopping Cart"
               >
 
                 <ShoppingCartIcon
@@ -415,7 +446,9 @@ const Navbar = () => {
 
                 <button
                   onClick={() =>
-                    setIsAccountOpen(!isAccountOpen)
+                    setIsAccountOpen(
+                      !isAccountOpen
+                    )
                   }
                   className="
                     flex items-center gap-2
@@ -749,6 +782,7 @@ const Navbar = () => {
 
                   </Link>
                 );
+
               })}
 
             </div>
@@ -757,67 +791,6 @@ const Navbar = () => {
 
             {!isLoginPage && (
               <div className="mt-4 border-t border-white/[0.06] pt-4">
-
-                {/* <button
-                  onClick={() =>
-                    setIsAccountOpen(!isAccountOpen)
-                  }
-                  className="
-                    w-full
-                    flex items-center justify-between
-                    py-3
-                    text-slate-300
-                    hover:text-white
-                  "
-                >
-
-                  <div className="flex items-center gap-3">
-
-                    <div
-                      className="
-                        w-9 h-9
-                        flex items-center justify-center
-                        bg-blue-500/10
-                        border border-blue-500/20
-                        text-blue-400
-                      "
-                    >
-                      <UserIcon
-                        className="w-[18px] h-[18px]"
-                        strokeWidth={1.8}
-                      />
-                    </div>
-
-                    <div className="text-left">
-
-                      <p className="text-[10px] text-slate-500 uppercase tracking-wider">
-                        Account
-                      </p>
-
-                      <p className="text-sm text-white font-medium">
-                        {isAuthenticated
-                          ? username || "User"
-                          : "Login"}
-                      </p>
-
-                    </div>
-
-                  </div>
-
-                  <ChevronDownIcon
-                    className={`
-                      w-4 h-4 text-slate-500
-                      transition-transform
-                      ${
-                        isAccountOpen
-                          ? "rotate-180"
-                          : ""
-                      }
-                    `}
-                    strokeWidth={1.8}
-                  />
-
-                </button> */}
 
                 {/* ================= MOBILE ACCOUNT DROPDOWN ================= */}
 

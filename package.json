@@ -2,7 +2,7 @@
   "name": "medicinestore",
   "version": "1.0.0",
   "description": "",
-  "main": "backend/server.js",
+  "main": "backend/api-gateway/server.js",
 "scripts": {
   "dev": "concurrently \"npm run dev --prefix frontend\" \"npm run dev --prefix backend/api-gateway\" \"npm run dev --prefix backend/auth-service\" \"npm run dev --prefix backend/payment-service\" \"npm run dev --prefix backend/cart-service\" \"npm run dev --prefix backend/order-service\""
 },
