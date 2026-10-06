@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 
 import {
@@ -33,31 +32,28 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Desktop account dropdown
   const [isAccountOpen, setIsAccountOpen] = useState(false);
+
+  // Mobile account section
+  const [isMobileAccountOpen, setIsMobileAccountOpen] = useState(false);
 
   const accountRef = useRef(null);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // =========================
-  // CURRENT URL
-  // =========================
-
   const { pathname } = useLocation();
 
   const isLoginPage = pathname === "/login";
 
-  // Login + Signup pages
+  // Cart should NOT appear on login/signup
   const isAuthPage =
     pathname === "/login" ||
     pathname === "/signup";
 
   const isHomePage = pathname === "/";
-
-  // =========================
-  // REDUX AUTH STATE
-  // =========================
 
   const username = useSelector(
     (state) => state.auth.user
@@ -68,10 +64,6 @@ const Navbar = () => {
   );
 
   const { cartItems } = useCart();
-
-  // =========================
-  // NAVIGATION LINKS
-  // =========================
 
   const navLinks = [
     {
@@ -91,10 +83,7 @@ const Navbar = () => {
     },
   ];
 
-  // =========================
-  // SCROLL EFFECT
-  // =========================
-
+  // Scroll effect
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 12);
@@ -107,11 +96,7 @@ const Navbar = () => {
     };
   }, []);
 
-  // =========================
-  // CLOSE ACCOUNT DROPDOWN
-  // WHEN CLICKING OUTSIDE
-  // =========================
-
+  // Desktop account outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -135,14 +120,12 @@ const Navbar = () => {
     };
   }, []);
 
-  // =========================
-  // CLOSE DROPDOWN WITH ESC
-  // =========================
-
+  // Escape key
   useEffect(() => {
     const handleEscape = (event) => {
       if (event.key === "Escape") {
         setIsAccountOpen(false);
+        setIsMobileAccountOpen(false);
       }
     };
 
@@ -159,10 +142,7 @@ const Navbar = () => {
     };
   }, []);
 
-  // =========================
-  // SEARCH
-  // =========================
-
+  // Search
   const handleSearch = (e) => {
     e.preventDefault();
 
@@ -178,563 +158,316 @@ const Navbar = () => {
     }
   };
 
-  // =========================
-  // LOGOUT
-  // =========================
-
+  // Logout
   const handleLogout = () => {
     dispatch(logout());
 
+    // Remove old username if it exists
     localStorage.removeItem("username");
 
     setIsAccountOpen(false);
+    setIsMobileAccountOpen(false);
     setIsMenuOpen(false);
 
     navigate("/");
   };
 
-  // =========================
-  // LOGIN
-  // =========================
-
+  // Login
   const handleLogin = () => {
     setIsAccountOpen(false);
+    setIsMobileAccountOpen(false);
     setIsMenuOpen(false);
 
     navigate("/login");
   };
 
+  // Orders
+  const handleOrders = () => {
+    setIsAccountOpen(false);
+    setIsMobileAccountOpen(false);
+    setIsMenuOpen(false);
+
+    navigate("/orders");
+  };
+
+  // Mobile menu close
+  const closeMobileMenu = () => {
+    setIsMenuOpen(false);
+    setIsMobileAccountOpen(false);
+  };
+
   return (
     <header
-      className={`
-        fixed top-0 left-0 w-full z-50
-        transition-all duration-300
-        ${
-          isScrolled
-            ? "bg-[#071a2d]/95 backdrop-blur-xl border-b border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.18)]"
-            : "bg-[#071a2d]/90 backdrop-blur-md border-b border-white/[0.06]"
-        }
-      `}
+      className={`sticky top-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-[#071a2d]/95 backdrop-blur-md shadow-lg"
+          : "bg-[#071a2d]"
+      }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        <div className="h-[72px] flex items-center justify-between gap-5">
+        <div className="h-16 flex items-center justify-between">
 
           {/* ================= LOGO ================= */}
-
           <Link
             to="/"
-            className="flex items-center gap-3 shrink-0 group"
+            onClick={closeMobileMenu}
+            className="flex items-center gap-3 shrink-0"
           >
-            <div className="leading-none">
+            <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center">
+              <PillIcon
+                size={22}
+                className="text-white"
+              />
+            </div>
 
-              <div className="text-white font-semibold tracking-[0.12em] text-[15px] sm:text-[17px]">
-                MY
-                <span className="text-blue-400">
-                  -PHARMA
-                </span>
-              </div>
+            <div className="hidden sm:block">
+              <h1 className="text-white font-bold text-lg leading-none">
+                My Pharma
+              </h1>
 
-              <div className="hidden sm:block text-[9px] text-slate-500 tracking-[0.25em] mt-1.5 uppercase">
-                Healthcare • Pharmacy
-              </div>
-
+              <p className="text-blue-300 text-[10px] tracking-wider mt-1">
+                HEALTHCARE • PHARMACY
+              </p>
             </div>
           </Link>
 
           {/* ================= DESKTOP NAV ================= */}
+          <nav className="hidden lg:flex items-center gap-1 ml-8">
+            {navLinks.map((link) => {
+              const Icon = link.icon;
+              const isActive =
+                pathname === link.path;
 
-          <nav className="hidden lg:flex items-center h-full">
-
-            <div className="flex items-center gap-1">
-
-              {navLinks.map((link) => {
-
-                const Icon = link.icon;
-
-                const isActive =
-                  pathname === link.path;
-
-                return (
-                  <Link
-                    key={link.path}
-                    to={link.path}
-                    className={`
-                      relative px-4 py-2.5
-                      flex items-center gap-2
-                      text-sm
-                      transition-all duration-200
-                      ${
-                        isActive
-                          ? "text-blue-400"
-                          : "text-slate-400 hover:text-white"
-                      }
-                    `}
-                  >
-
-                    <Icon
-                      className={`w-[17px] h-[17px] ${
-                        isActive
-                          ? "text-blue-400"
-                          : "text-slate-500"
-                      }`}
-                      strokeWidth={1.8}
-                    />
-
-                    <span>{link.label}</span>
-
-                  </Link>
-                );
-
-              })}
-
-            </div>
-
+              return (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition ${
+                    isActive
+                      ? "bg-blue-600 text-white"
+                      : "text-slate-300 hover:text-white hover:bg-white/5"
+                  }`}
+                >
+                  <Icon size={17} />
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
 
-          {/* ================= SEARCH ================= */}
+          {/* ================= DESKTOP SEARCH ================= */}
+          <form
+            onSubmit={handleSearch}
+            className="hidden md:flex flex-1 max-w-md mx-6"
+          >
+            <div className="relative w-full">
+              <SearchIcon
+                size={18}
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+              />
 
-          <div className="hidden md:flex flex-1 max-w-[360px] lg:max-w-[420px]">
-
-            <form
-              onSubmit={handleSearch}
-              className="w-full"
-            >
-
-              <div className="relative group">
-
-                <SearchIcon
-                  className="
-                    absolute left-3.5 top-1/2
-                    -translate-y-1/2
-                    w-[17px] h-[17px]
-                    text-slate-500
-                    group-focus-within:text-blue-400
-                    transition-colors
-                  "
-                  strokeWidth={1.8}
-                />
-
-                <input
-                  type="text"
-                  placeholder="Search medicines, products..."
-                  value={searchQuery}
-                  onChange={(e) =>
-                    setSearchQuery(e.target.value)
-                  }
-                  className="
-                    w-full
-                    h-10
-                    pl-10 pr-4
-                    bg-[#0b2035]
-                    border border-white/[0.08]
-                    text-sm text-white
-                    placeholder:text-slate-600
-                    outline-none
-                    transition-all duration-200
-                    focus:border-blue-500/60
-                    focus:bg-[#0d253d]
-                  "
-                />
-
-              </div>
-
-            </form>
-
-          </div>
-
-          {/* ================= ACTIONS ================= */}
-
-          <div className="flex items-center gap-1 shrink-0">
-
-            {/* ================= WISHLIST ================= */}
-
-            {isHomePage && (
-              <button
-                onClick={() =>
-                  navigate("/wishlist")
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) =>
+                  setSearchQuery(e.target.value)
                 }
-                className="
-                  relative
-                  w-10 h-10
-                  flex items-center justify-center
-                  text-slate-400
-                  hover:text-white
-                  hover:bg-white/[0.05]
-                  transition-all duration-200
-                "
-                aria-label="Wishlist"
-              >
-                <HeartIcon
-                  className="w-[19px] h-[19px]"
-                  strokeWidth={1.8}
-                />
-              </button>
-            )}
+                placeholder="Search medicines..."
+                className="w-full bg-white/10 border border-white/10 text-white placeholder:text-slate-400 rounded-lg py-2.5 pl-10 pr-4 text-sm outline-none focus:border-blue-500 focus:bg-white/15"
+              />
+            </div>
+          </form>
 
-            {/* ================= CART ================= */}
+          {/* ================= RIGHT SIDE ================= */}
+          <div className="flex items-center gap-2">
 
-            {/* 
-              Cart hidden only on:
-              /login
-              /signup
-
-              Cart visible everywhere else.
-            */}
-
-            {!isAuthPage && (
+            {/* Wishlist - Home only */}
+            {isHomePage && (
               <Link
-                to="/cart"
-                className="
-                  relative
-                  w-10 h-10
-                  flex items-center justify-center
-                  border border-blue-500/30
-                  bg-blue-500/10
-                  hover:bg-blue-500/15
-                  hover:border-blue-400/50
-                  transition-all duration-300
-                "
-                aria-label="Shopping Cart"
+                to="/wishlist"
+                className="hidden sm:flex relative w-10 h-10 items-center justify-center rounded-lg text-slate-300 hover:text-white hover:bg-white/10 transition"
               >
-
-                <ShoppingCartIcon
-                  className="w-[21px] h-[21px] text-blue-400"
-                  strokeWidth={1.8}
-                />
-
-                {cartItems?.length > 0 && (
-                  <span
-                    className="
-                      absolute
-                      -top-1.5
-                      -right-1.5
-                      min-w-[18px]
-                      h-[18px]
-                      px-1
-                      flex items-center justify-center
-                      bg-blue-600
-                      text-white
-                      text-[10px]
-                      font-bold
-                      leading-none
-                      rounded-full
-                      border-2
-                      border-[#071a2d]
-                    "
-                  >
-                    {cartItems.length}
-                  </span>
-                )}
-
+                <HeartIcon size={20} />
               </Link>
             )}
 
-            {/* ================= DIVIDER ================= */}
+            {/* Cart - hidden on login/signup */}
+            {!isAuthPage && (
+              <Link
+                to="/cart"
+                className="relative w-10 h-10 flex items-center justify-center rounded-lg text-slate-300 hover:text-white hover:bg-white/10 transition"
+              >
+                <ShoppingCartIcon size={21} />
 
-            {!isLoginPage && (
-              <div className="hidden md:block w-px h-7 bg-white/10 mx-2" />
+                {cartItems?.length > 0 && (
+                  <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-blue-600 text-white text-[10px] font-bold flex items-center justify-center">
+                    {cartItems.length}
+                  </span>
+                )}
+              </Link>
             )}
 
-            {/* ================= ACCOUNT ================= */}
-
-            {!isLoginPage && (
+            {/* ================= DESKTOP ACCOUNT ================= */}
+            {!isAuthPage && (
               <div
                 ref={accountRef}
-                className="relative"
+                className="hidden lg:block relative"
               >
-
                 <button
                   onClick={() =>
                     setIsAccountOpen(
                       !isAccountOpen
                     )
                   }
-                  className="
-                    flex items-center gap-2
-                    h-10
-                    px-2.5
-                    text-slate-300
-                    hover:text-white
-                    hover:bg-white/[0.05]
-                    transition-all duration-200
-                  "
-                  aria-label="Account menu"
-                  aria-expanded={isAccountOpen}
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 transition"
                 >
+                  <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
+                    <UserIcon size={17} />
+                  </div>
 
-                  <div
-                    className="
-                      w-8 h-8
-                      flex items-center justify-center
-                      bg-blue-500/10
-                      border border-blue-500/20
-                      text-blue-400
-                    "
-                  >
-                    <UserIcon
-                      className="w-[17px] h-[17px]"
-                      strokeWidth={1.8}
-                    />
+                  <div className="hidden xl:block text-left">
+                    <p className="text-xs text-slate-400">
+                      {isAuthenticated
+                        ? "Signed in as"
+                        : "Account"}
+                    </p>
+
+                    <p className="text-sm text-white font-medium max-w-[100px] truncate">
+                      {isAuthenticated
+                        ? username || "User"
+                        : "Login"}
+                    </p>
                   </div>
 
                   <ChevronDownIcon
-                    className={`
-                      hidden sm:block
-                      w-4 h-4
-                      text-slate-500
-                      transition-transform duration-200
-                      ${
-                        isAccountOpen
-                          ? "rotate-180"
-                          : ""
-                      }
-                    `}
-                    strokeWidth={1.8}
+                    size={16}
+                    className={`transition-transform ${
+                      isAccountOpen
+                        ? "rotate-180"
+                        : ""
+                    }`}
                   />
-
                 </button>
 
-                {/* ================= DESKTOP ACCOUNT DROPDOWN ================= */}
-
+                {/* Desktop dropdown */}
                 {isAccountOpen && (
-                  <div
-                    className="
-                      absolute
-                      right-0
-                      top-[52px]
-                      w-56
-                      bg-[#0b2035]
-                      border border-white/[0.08]
-                      shadow-[0_18px_50px_rgba(0,0,0,0.35)]
-                      overflow-hidden
-                    "
-                  >
-
-                    {/* ================= LOGGED IN ================= */}
+                  <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-xl shadow-xl border border-slate-200 overflow-hidden">
 
                     {isAuthenticated ? (
                       <>
-
-                        {/* User Header */}
-
-                        <div
-                          className="
-                            px-4 py-3.5
-                            border-b border-white/[0.07]
-                          "
-                        >
-
-                          <p className="text-[11px] text-slate-500 uppercase tracking-[0.15em]">
+                        <div className="px-4 py-3 bg-slate-50 border-b">
+                          <p className="text-xs text-slate-500">
                             Signed in as
                           </p>
 
-                          <p
-                            className="
-                              mt-1
-                              text-sm
-                              text-white
-                              font-medium
-                              truncate
-                            "
-                          >
+                          <p className="text-sm font-semibold text-slate-800 truncate">
                             {username || "User"}
                           </p>
-
                         </div>
 
-                        {/* My Orders */}
-
                         <button
-                          onClick={() => {
-                            navigate("/orders");
-                            setIsAccountOpen(false);
-                          }}
-                          className="
-                            w-full
-                            px-4 py-3
-                            flex items-center gap-3
-                            text-sm text-slate-300
-                            hover:text-white
-                            hover:bg-white/[0.05]
-                            transition-colors
-                          "
+                          onClick={handleOrders}
+                          className="w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-700 hover:bg-slate-50 transition"
                         >
-
                           <PackageIcon
-                            className="w-[17px] h-[17px] text-slate-500"
-                            strokeWidth={1.8}
+                            size={18}
                           />
 
                           My Orders
 
+                          <ChevronRightIcon
+                            size={16}
+                            className="ml-auto"
+                          />
                         </button>
 
-                        {/* Logout */}
+                        <button
+                          onClick={handleLogout}
+                          className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition"
+                        >
+                          <LogOutIcon
+                            size={18}
+                          />
 
-                        <div className="border-t border-white/[0.07]">
-
-                          <button
-                            onClick={handleLogout}
-                            className="
-                              w-full
-                              px-4 py-3
-                              flex items-center gap-3
-                              text-sm text-slate-400
-                              hover:text-red-400
-                              hover:bg-red-500/[0.05]
-                              transition-colors
-                            "
-                          >
-
-                            <LogOutIcon
-                              className="w-[17px] h-[17px]"
-                              strokeWidth={1.8}
-                            />
-
-                            Logout
-
-                          </button>
-
-                        </div>
-
+                          Logout
+                        </button>
                       </>
-
                     ) : (
-
-                      /* ================= LOGGED OUT ================= */
-
                       <button
                         onClick={handleLogin}
-                        className="
-                          w-full
-                          px-4 py-3.5
-                          flex items-center gap-3
-                          text-sm text-slate-300
-                          hover:text-white
-                          hover:bg-white/[0.05]
-                          transition-colors
-                        "
+                        className="w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-700 hover:bg-slate-50 transition"
                       >
-
                         <LogInIcon
-                          className="w-[17px] h-[17px] text-blue-400"
-                          strokeWidth={1.8}
+                          size={18}
                         />
 
                         Login
 
+                        <ChevronRightIcon
+                          size={16}
+                          className="ml-auto"
+                        />
                       </button>
-
                     )}
-
                   </div>
                 )}
-
               </div>
             )}
 
-            {/* ================= MOBILE MENU BUTTON ================= */}
-
+            {/* ================= MOBILE HAMBURGER ================= */}
             <button
-              onClick={() =>
-                setIsMenuOpen(!isMenuOpen)
-              }
-              className="
-                md:hidden
-                w-10 h-10
-                flex items-center justify-center
-                text-slate-400
-                hover:text-white
-                hover:bg-white/[0.05]
-                transition-all duration-200
-              "
+              onClick={() => {
+                setIsMenuOpen(!isMenuOpen);
+
+                if (isMenuOpen) {
+                  setIsMobileAccountOpen(false);
+                }
+              }}
+              className="lg:hidden w-10 h-10 flex items-center justify-center rounded-lg text-slate-300 hover:text-white hover:bg-white/10 transition"
               aria-label="Toggle menu"
-              aria-expanded={isMenuOpen}
             >
-
               {isMenuOpen ? (
-                <XIcon
-                  className="w-5 h-5"
-                  strokeWidth={1.8}
-                />
+                <XIcon size={23} />
               ) : (
-                <MenuIcon
-                  className="w-5 h-5"
-                  strokeWidth={1.8}
-                />
+                <MenuIcon size={23} />
               )}
-
             </button>
-
           </div>
-
         </div>
 
         {/* ================= MOBILE MENU ================= */}
-
         {isMenuOpen && (
-          <div
-            className="
-              md:hidden
-              border-t border-white/[0.08]
-              py-5
-              bg-[#071a2d]
-            "
-          >
+          <div className="lg:hidden border-t border-white/10 py-4">
 
-            {/* ================= MOBILE SEARCH ================= */}
-
+            {/* Mobile Search */}
             <form
               onSubmit={handleSearch}
-              className="mb-5"
+              className="mb-4"
             >
-
               <div className="relative">
-
                 <SearchIcon
-                  className="
-                    absolute left-3.5 top-1/2
-                    -translate-y-1/2
-                    w-[17px] h-[17px]
-                    text-slate-500
-                  "
-                  strokeWidth={1.8}
+                  size={18}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
                 />
 
                 <input
                   type="text"
-                  placeholder="Search medicines, products..."
                   value={searchQuery}
                   onChange={(e) =>
-                    setSearchQuery(e.target.value)
+                    setSearchQuery(
+                      e.target.value
+                    )
                   }
-                  className="
-                    w-full
-                    h-11
-                    pl-10 pr-4
-                    bg-[#0b2035]
-                    border border-white/[0.08]
-                    text-sm text-white
-                    placeholder:text-slate-600
-                    outline-none
-                    focus:border-blue-500/60
-                    transition-all
-                  "
+                  placeholder="Search medicines..."
+                  className="w-full bg-white/10 border border-white/10 text-white placeholder:text-slate-400 rounded-lg py-2.5 pl-10 pr-4 text-sm outline-none focus:border-blue-500"
                 />
-
               </div>
-
             </form>
 
-            {/* ================= MOBILE NAVIGATION ================= */}
-
-            <div className="border-t border-white/[0.06]">
-
+            {/* Mobile Navigation */}
+            <div className="space-y-1">
               {navLinks.map((link) => {
-
                 const Icon = link.icon;
-
                 const isActive =
                   pathname === link.path;
 
@@ -742,180 +475,134 @@ const Navbar = () => {
                   <Link
                     key={link.path}
                     to={link.path}
-                    onClick={() =>
-                      setIsMenuOpen(false)
-                    }
-                    className={`
-                      flex items-center justify-between
-                      py-3.5
-                      border-b border-white/[0.05]
-                      transition-colors
-                      ${
-                        isActive
-                          ? "text-blue-400"
-                          : "text-slate-400 hover:text-white"
-                      }
-                    `}
+                    onClick={closeMobileMenu}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium ${
+                      isActive
+                        ? "bg-blue-600 text-white"
+                        : "text-slate-300 hover:bg-white/5 hover:text-white"
+                    }`}
                   >
-
-                    <div className="flex items-center gap-3">
-
-                      <Icon
-                        className={`w-[18px] h-[18px] ${
-                          isActive
-                            ? "text-blue-400"
-                            : "text-slate-500"
-                        }`}
-                        strokeWidth={1.8}
-                      />
-
-                      <span className="text-sm">
-                        {link.label}
-                      </span>
-
-                    </div>
+                    <Icon size={19} />
+                    {link.label}
 
                     <ChevronRightIcon
-                      className="w-4 h-4 text-slate-600"
-                      strokeWidth={1.7}
+                      size={16}
+                      className="ml-auto"
                     />
-
                   </Link>
                 );
-
               })}
-
             </div>
 
             {/* ================= MOBILE ACCOUNT ================= */}
+            {!isAuthPage && (
+              <div className="mt-4 border-t border-white/10 pt-4">
 
-            {!isLoginPage && (
-              <div className="mt-4 border-t border-white/[0.06] pt-4">
+                {/* Account Toggle */}
+                <button
+                  onClick={() =>
+                    setIsMobileAccountOpen(
+                      !isMobileAccountOpen
+                    )
+                  }
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition"
+                >
+                  <div className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center shrink-0">
+                    <UserIcon size={18} />
+                  </div>
 
-                {/* ================= MOBILE ACCOUNT DROPDOWN ================= */}
+                  <div className="text-left flex-1">
+                    <p className="text-xs text-slate-400">
+                      {isAuthenticated
+                        ? "Signed in as"
+                        : "Account"}
+                    </p>
 
-                {isAccountOpen && (
-                  <div
-                    className="
-                      mt-2
-                      border border-white/[0.07]
-                      bg-[#0b2035]
-                    "
-                  >
+                    <p className="text-sm text-white font-medium truncate">
+                      {isAuthenticated
+                        ? username || "User"
+                        : "Login"}
+                    </p>
+                  </div>
+
+                  <ChevronDownIcon
+                    size={18}
+                    className={`transition-transform ${
+                      isMobileAccountOpen
+                        ? "rotate-180"
+                        : ""
+                    }`}
+                  />
+                </button>
+
+                {/* Account Content */}
+                {isMobileAccountOpen && (
+                  <div className="mt-2 ml-12 mr-2 space-y-1">
 
                     {isAuthenticated ? (
                       <>
-
-                        {/* My Account */}
-
-                        <button
-                          onClick={() => {
-                            navigate("/account");
-                            setIsAccountOpen(false);
-                            setIsMenuOpen(false);
-                          }}
-                          className="
-                            w-full
-                            px-4 py-3
-                            flex items-center gap-3
-                            text-sm text-slate-300
-                            hover:text-white
-                            hover:bg-white/[0.05]
-                          "
-                        >
-
-                          <UserIcon className="w-4 h-4" />
-
-                          My Account
-
-                        </button>
-
                         {/* My Orders */}
-
                         <button
-                          onClick={() => {
-                            navigate("/orders");
-                            setIsAccountOpen(false);
-                            setIsMenuOpen(false);
-                          }}
-                          className="
-                            w-full
-                            px-4 py-3
-                            flex items-center gap-3
-                            text-sm text-slate-300
-                            hover:text-white
-                            hover:bg-white/[0.05]
-                          "
+                          onClick={handleOrders}
+                          className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition text-left"
                         >
+                          <PackageIcon
+                            size={18}
+                          />
 
-                          <PackageIcon className="w-4 h-4" />
+                          <span>
+                            My Orders
+                          </span>
 
-                          My Orders
-
+                          <ChevronRightIcon
+                            size={16}
+                            className="ml-auto"
+                          />
                         </button>
 
                         {/* Logout */}
-
                         <button
                           onClick={handleLogout}
-                          className="
-                            w-full
-                            px-4 py-3
-                            flex items-center gap-3
-                            border-t border-white/[0.07]
-                            text-sm text-slate-400
-                            hover:text-red-400
-                            hover:bg-red-500/[0.05]
-                          "
+                          className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-400 hover:bg-red-500/10 transition text-left"
                         >
+                          <LogOutIcon
+                            size={18}
+                          />
 
-                          <LogOutIcon className="w-4 h-4" />
-
-                          Logout
-
+                          <span>
+                            Logout
+                          </span>
                         </button>
-
                       </>
-
                     ) : (
-
-                      /* ================= MOBILE LOGIN ================= */
-
+                      /* Login */
                       <button
                         onClick={handleLogin}
-                        className="
-                          w-full
-                          px-4 py-3
-                          flex items-center gap-3
-                          text-sm text-slate-300
-                          hover:text-white
-                          hover:bg-white/[0.05]
-                        "
+                        className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-blue-400 hover:bg-blue-500/10 transition text-left"
                       >
-
                         <LogInIcon
-                          className="w-4 h-4 text-blue-400"
+                          size={18}
                         />
 
-                        Login
+                        <span>
+                          Login
+                        </span>
 
+                        <ChevronRightIcon
+                          size={16}
+                          className="ml-auto"
+                        />
                       </button>
-
                     )}
-
                   </div>
                 )}
-
               </div>
             )}
-
           </div>
         )}
-
       </div>
     </header>
   );
 };
 
 export default Navbar;
-
