@@ -1,157 +1,372 @@
 # My-Pharma
 
-My-Pharma is a MERN-based medical e-commerce application built using a microservices architecture.
+My-Pharma is a MERN-based medical e-commerce application designed around a microservices architecture.
 
-The application separates authentication, cart management, payment processing and order management into independent backend services.
+Instead of handling the complete application through a single backend, the system separates authentication, cart management, payments and order processing into independent services. An API Gateway acts as the entry point for the frontend and routes requests to the appropriate service.
 
-## Features
+The project was built to work with a distributed backend setup while keeping the frontend, business responsibilities and service configuration separated.
 
-* User registration and login
-* JWT-based authentication
-* Medical product browsing
-* Shopping cart management
-* Cart quantity management
-* Online payment integration with Razorpay
-* Order creation and management
-* Order history
-* Separate backend services for different application responsibilities
-* Redux Toolkit for frontend state management
+## Architecture
+
+```text
+                            React Vite Frontend
+                                  |
+                                  v
+                             API Gateway
+                                  |
+              +-------------------+-------------------+
+              |                   |                   |
+              v                   v                   v
+        Auth Service        Cart Service       Payment Service
+              |                   |                   |
+              v                   v                   v
+           MongoDB             MongoDB             Razorpay
+                                                      |
+                                                      v
+                                             Payment Verification
+                                                      |
+                                                      v
+                                               Orders Service
+                                                      |
+                                                      v
+                                                   MongoDB
+```
+
+Each backend service has its own responsibility and can be developed, configured and deployed independently.
+
+## Core Engineering
+
+### Service Separation
+
+The backend is split according to application responsibilities rather than keeping all business logic inside one Express server.
+
+* **Auth Service** handles identity and JWT generation.
+* **Cart Service** manages user cart data.
+* **Payment Service** handles Razorpay order creation and verification.
+* **Orders Service** manages the final order record and order retrieval.
+* **API Gateway** provides a single backend entry point for the frontend.
+
+This separation keeps changes in one domain from directly affecting the implementation of another service.
+
+### API Gateway
+
+The frontend communicates through an API Gateway instead of directly depending on multiple service endpoints.
+
+The gateway routes incoming requests to the required backend service based on the API path.
+
+```text
+Frontend
+   |
+   v
+API Gateway
+   |
+   +---- /auth     → Auth Service
+   |
+   +---- /cart     → Cart Service
+   |
+   +---- /payment  → Payment Service
+   |
+   +---- /orders   → Orders Service
+```
+
+This also provides a cleaner setup for deploying the individual backend services separately.
+
+## Authentication
+
+Authentication is implemented using JWT.
+
+The Auth Service generates the token after successful login. Protected requests carry the token to the backend, where service middleware verifies the token and identifies the authenticated user.
+
+```text
+Login
+  |
+  v
+Auth Service
+  |
+  v
+JWT
+  |
+  v
+Redux Auth State
+  |
+  v
+Protected Request
+  |
+  v
+JWT Verification
+  |
+  v
+Authenticated User
+```
+
+The authenticated user's identity is then used by services such as Cart and Orders to access user-specific data.
+
+## Payment Architecture
+
+Razorpay is integrated through a dedicated Payment Service instead of placing payment logic inside the frontend or Orders Service.
+
+The payment flow is:
+
+```text
+Checkout
+   |
+   v
+Payment Service
+   |
+   v
+Create Razorpay Order
+   |
+   v
+Razorpay Checkout
+   |
+   v
+Payment Completed
+   |
+   v
+Backend Verification
+   |
+   v
+Orders Service
+   |
+   v
+Order Created
+```
+
+Payment verification is performed on the backend before the order is created.
+
+This keeps the payment credentials and verification logic away from the client-side application.
+
+## Order Processing
+
+Orders are created only after the payment flow reaches the verification stage.
+
+The order record contains the relevant purchase information, shipping details and payment references required for order history.
+
+The Orders Service is responsible for persisting and retrieving this information independently from the Cart and Payment services.
+
+## Frontend Architecture
+
+The frontend is developed using React and Vite.
+
+Redux Toolkit is used for application-wide state that needs to be shared across different parts of the application.
+
+Current Redux-managed state includes:
+
+* Authentication state
+* JWT token
+* Logged-in user
+* Cart state
+
+Axios is used for API communication, while React Router handles client-side navigation and protected application routes.
 
 ## Tech Stack
 
-**Frontend**
+### Frontend
 
-* React.js
+* React
 * JavaScript
+* Vite
 * Redux Toolkit
-* React Hooks
+* React Router
 * Axios
-* HTML5
-* CSS3
+* Tailwind CSS
+* Lucide React
 
-**Backend**
+### Backend
 
 * Node.js
 * Express.js
 * REST APIs
 * MongoDB
-* JWT Authentication
+* JWT
+* Axios
 
-**Payment**
+### Infrastructure and Integration
 
+* API Gateway
 * Razorpay
+* Environment-based configuration
+* Independent backend services
 
-**Tools**
+### Development
 
 * Git
 * GitHub
-* Thunderclient
+* Thunder Client
+* VS Code
 
-## Microservices Architecture
+## Backend Services
 
-My-Pharma is divided into four main backend services:
+| Service         | Responsibility                                        |
+| --------------- | ----------------------------------------------------- |
+| Auth Service    | User authentication and JWT handling                  |
+| Cart Service    | User cart persistence and cart operations             |
+| Payment Service | Razorpay order creation and payment verification      |
+| Orders Service  | Order creation, persistence and order retrieval       |
+| API Gateway     | Request routing between frontend and backend services |
 
-**Auth Service**
+## Security
 
-* Handles user registration and login
-* Generates and validates JWT authentication tokens
-* Manages user authentication
+The project keeps sensitive configuration outside the source code through environment variables.
 
-**Cart Service**
+The following types of configuration are handled through environment variables:
 
-* Handles adding products to the cart
-* Manages cart quantities
-* Retrieves and removes cart items
+```text
+MONGODB_URI
+JWT_SECRET
+RAZORPAY_KEY_ID
+RAZORPAY_KEY_SECRET
+SERVICE_URL
+```
 
-**Payment Service**
+The Razorpay secret key and JWT secret are used only on the backend.
 
-* Creates Razorpay payment orders
-* Handles payment verification
-* Processes payment-related requests
+Protected APIs validate the JWT before processing authenticated requests.
 
-**Orders Service**
+## Service Communication
 
-* Creates orders after successful payment
-* Stores order information
-* Handles order retrieval and order status
+The application uses HTTP-based communication between the frontend, gateway and backend services.
 
-### Service Flow
+Service URLs are configurable through environment variables so that the same application structure can be used across local development and deployed environments.
 
-Frontend → Auth Service → JWT
+This makes it possible to run the services locally on separate ports and later point the gateway to their deployed URLs without changing the application architecture.
 
-Frontend → Cart Service → Cart Data
+## Deployment
 
-Frontend → Payment Service → Razorpay
+The application is structured for separate deployment of its frontend and backend components.
 
-Frontend → Orders Service → Order Data
+The frontend can be deployed independently from the backend services, while each backend service can run as its own deployment.
 
-## Authentication
+A typical production flow is:
 
-JWT is used to authenticate users across the application.
+```text
+                    Frontend
+                       |
+                       v
+                  API Gateway
+                       |
+        +--------------+--------------+
+        |              |              |
+        v              v              v
+      Auth           Cart          Payment
+        |              |              |
+        v              v              v
+     Database       Database       Razorpay
+                                      |
+                                      v
+                                    Orders
+                                      |
+                                      v
+                                   Database
+```
 
-After login, the Auth Service generates a JWT token. The frontend stores the token and sends it with requests to protected services.
+Service URLs and credentials are supplied through the deployment environment rather than being hardcoded into the application.
 
-The respective service middleware verifies the token and identifies the authenticated user before processing the request.
+## Project Structure
 
-## Frontend State Management
+```text
+My-Pharma/
+│
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   └── package.json
+│
+├── backend/
+│   │
+│   ├── auth-service/
+│   │   ├── controllers/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── middleware/
+│   │   └── server.js
+│   │
+│   ├── cart-service/
+│   │   ├── controllers/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── middleware/
+│   │   └── server.js
+│   │
+│   ├── payment-service/
+│   │   ├── controllers/
+│   │   ├── routes/
+│   │   └── server.js
+│   │
+│   ├── orders-service/
+│   │   ├── controllers/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── middleware/
+│   │   └── server.js
+│   │
+│   └── api-gateway/
+│       ├── server.js
+│       └── package.json
+│
+└── package.json
+```
 
-Redux Toolkit is used as the main state management solution on the frontend.
+Each service owns the code related to its particular domain instead of sharing one large backend codebase.
 
-Authentication state and cart state are maintained through Redux so that shared data can be accessed across different components.
+## Local Setup
 
-## Payment Flow
+Clone the repository:
 
-The payment process is handled through the Payment Service and Razorpay.
+```bash
+git clone <repository-url>
+cd My-Pharma
+```
 
-The basic flow is:
+Install the frontend dependencies:
 
-User Checkout → Payment Service → Razorpay Order → Payment → Payment Verification → Order Creation
+```bash
+cd frontend
+npm install
+```
 
-After successful payment verification, the order information is sent for order creation.
+Install dependencies inside each backend service:
 
-## Services
+```bash
+npm install
+```
 
-The project contains the following backend services:
+Configure the required environment variables for the services.
 
-* Auth Service
-* Cart Service
-* Payment Service
-* Orders Service
+Start the individual backend services using their respective development commands.
 
-Each service has its own responsibility and exposes APIs for the frontend or required service communication.
+Start the frontend:
 
-## Getting Started
+```bash
+npm run dev
+```
 
-Clone the repository and install the dependencies for the frontend and individual backend services.
+Once the services are running, the frontend communicates with the backend through the configured API Gateway.
 
-Configure the required environment variables for:
+## What This Project Demonstrates
 
-* MongoDB
-* JWT authentication
-* Razorpay
+My-Pharma focuses on the backend and system-design problems involved in moving from a monolithic application toward a service-oriented architecture.
 
-Start the frontend and backend services according to their configured ports.
+The main areas implemented in the project include:
 
-## Project Highlights
-
-During the development of My-Pharma, I worked on:
-
-* Designing a microservices-based backend architecture
-* Developing separate authentication, cart, payment and order services
-* Implementing JWT authentication
-* Managing frontend state using Redux Toolkit
-* Integrating Razorpay payment processing
-* Developing REST APIs using Node.js and Express
-* Connecting services with MongoDB
-* Handling communication between frontend and backend services
-* Testing and debugging API integration
+* Designing service boundaries around business responsibilities
+* Building and connecting independent Express services
+* Implementing JWT-based authentication across protected APIs
+* Introducing an API Gateway between the frontend and backend services
+* Integrating Razorpay with backend payment verification
+* Connecting successful payment verification with order creation
+* Managing shared frontend state using Redux Toolkit
+* Using environment-based configuration for local and deployed environments
+* Persisting application data using MongoDB
+* Deploying frontend and backend components independently
+* Debugging API communication across multiple services and environments
 
 ## Project Status
 
-My-Pharma is a MERN-based medical e-commerce project developed to practice microservices architecture, authentication, payment integration, state management and REST API development.
+My-Pharma is a working project developed as a practical implementation of a microservices-based e-commerce system.
+
+The project focuses on understanding how authentication, cart, payment and order responsibilities can be separated into independent services while keeping the frontend connected through a single API entry point.
 
 ## Author
 
 **Piyush Negi**
-
-
