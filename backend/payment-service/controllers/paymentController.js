@@ -2,9 +2,9 @@ import Razorpay from "razorpay";
 import crypto from "crypto";
 import axios from "axios";
 
-// ===============================
+
 // CREATE PAYMENT ORDER
-// ===============================
+
 
 export const createPaymentOrder = async (req, res) => {
   const razorpay = new Razorpay({
@@ -49,9 +49,9 @@ export const createPaymentOrder = async (req, res) => {
   }
 };
 
-// ===============================
+
 // VERIFY PAYMENT
-// ===============================
+
 
 export const verifyPayment = async (req, res) => {
   try {
@@ -64,9 +64,8 @@ export const verifyPayment = async (req, res) => {
       shippingAddress,
     } = req.body;
 
-    // ===============================
     // VALIDATE PAYMENT RESPONSE
-    // ===============================
+    
 
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
       return res.status(400).json({
@@ -75,24 +74,24 @@ export const verifyPayment = async (req, res) => {
       });
     }
 
-    // ===============================
+  
     // CREATE SIGNATURE BODY
-    // ===============================
+   
 
     const body = razorpay_order_id + "|" + razorpay_payment_id;
 
-    // ===============================
+
     // GENERATE SIGNATURE
-    // ===============================
+   
 
     const expectedSignature = crypto
       .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
       .update(body)
       .digest("hex");
 
-    // ===============================
+   
     // COMPARE SIGNATURE
-    // ===============================
+    
 
     if (expectedSignature !== razorpay_signature) {
       return res.status(400).json({
@@ -101,16 +100,16 @@ export const verifyPayment = async (req, res) => {
       });
     }
 
-    // ===============================
+   
     // PAYMENT VERIFIED
-    // ===============================
+ 
 
     const userId = req.userId;
   
 
-    // ===============================
+    
     // SEND ORDER TO ORDER SERVICE
-    // ===============================
+
 
     const orderResponse = await axios.post(
       `${process.env.API_GATEWAY_URL}/api/orders/create`,
@@ -139,9 +138,8 @@ export const verifyPayment = async (req, res) => {
       },
     );
 
-    // ===============================
     // RESPONSE TO FRONTEND
-    // ===============================
+  
 
     return res.status(200).json({
       success: true,

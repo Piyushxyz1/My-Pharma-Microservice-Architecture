@@ -8,9 +8,9 @@ import { createProxyMiddleware } from "http-proxy-middleware";
 
 dotenv.config();
 
-// ===============================
+
 // 1. ENVIRONMENT VALIDATION
-// ===============================
+
 const requiredEnvVars = [
   "APP_URL",
   "AUTH_SERVICE_URL",
@@ -32,9 +32,9 @@ const PORT = process.env.PORT || 5000;
 // REQUIRED FOR RENDER: Instructs Express to trust Render's reverse proxy headers
 app.set("trust proxy", 1);
 
-// ===============================
+
 // 2. SECURITY & LOGGING
-// ===============================
+
 
 app.use(
   cors({
@@ -47,8 +47,8 @@ app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 
 // Rate limiting: Protects services from excessive requests
 const limiter = rateLimit({
-  windowMs: 1 * 60 * 1000, // 1 minute
-  max: 100, // Limit each IP to 100 requests per minute
+  windowMs: 1 * 60 * 1000, 
+  max: 100, 
   standardHeaders: true,
   legacyHeaders: false,
   message: {
@@ -58,9 +58,9 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// ===============================
+
 // 3. HEALTH CHECK ROUTE
-// ===============================
+
 
 // DO NOT use express.json() globally above proxy routes.
 // Keep it scoped ONLY to non-proxied routes like /health.
@@ -72,9 +72,9 @@ app.get("/health", express.json(), (req, res) => {
   });
 });
 
-// ===============================
+
 // 4. PROXY FACTORY FUNCTION
-// ===============================
+
 
 const createGatewayProxy = (targetUrl) =>
   createProxyMiddleware({
@@ -97,10 +97,10 @@ const createGatewayProxy = (targetUrl) =>
     },
   });
 
-// ===============================
+
 // 5. SERVICE ROUTES
-// ===============================
-// Note: We re-attach req.url base paths so Express's path-stripping
+
+//  We re-attach req.url base paths so Express's path-stripping
 // does not cause 404s on your downstream microservices.
 
 // AUTH SERVICE
@@ -127,9 +127,9 @@ app.use("/api/orders", (req, res, next) => {
   createGatewayProxy(process.env.ORDER_SERVICE_URL)(req, res, next);
 });
 
-// ===============================
+
 // 6. 404 FALLBACK
-// ===============================
+
 app.use((req, res) => {
   res.status(404).json({
     success: false,
@@ -137,9 +137,9 @@ app.use((req, res) => {
   });
 });
 
-// ===============================
+
 // 7. SERVER START & SHUTDOWN
-// ===============================
+
 
 const server = app.listen(PORT, "0.0.0.0", () => {
   console.log(`API Gateway operational on port ${PORT}`);
